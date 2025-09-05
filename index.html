@@ -11,37 +11,61 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        /* New Dark "Glass & Aurora" Theme */
-        --color-bg-dark: #0A0F1F;
-        --color-bg-light: #171C2B;
-        --color-panel: rgba(23, 28, 43, 0.5);
-        --color-panel-solid: #171C2B;
+        /* Base Palette */
+        --color-bg-dark: #050505;
+        --color-bg-light: #111111;
+        --color-panel: rgba(255, 255, 255, 0.05);
+        --color-panel-solid: #111111;
         --color-border: rgba(255, 255, 255, 0.1);
         --color-border-heavy: rgba(255, 255, 255, 0.2);
 
-        --color-text-primary: #F1F5F9; /* slate-100 */
-        --color-text-secondary: #94A3B8; /* slate-400 */
-        --color-text-tertiary: #64748B; /* slate-500 */
+        /* Text Palette */
+        --color-text-primary: #EAEAEA;
+        --color-text-secondary: #A0A0A0;
+        --color-text-tertiary: #777777; /* Adjusted for better contrast */
         
-        /* Accents */
-        --color-accent-primary: #3B82F6;  /* blue-500 */
-        --color-accent-secondary: #8B5CF6; /* violet-500 */
-        
+        /* Accent Palette */
+        --color-accent-primary: #3B82F6;
+        --color-accent-secondary: #8B5CF6;
         --color-accent-primary-glow: rgba(59, 130, 246, 0.15);
         --color-accent-secondary-glow: rgba(139, 92, 246, 0.15);
-        
-        /* Utility Colors */
-        --color-success: #22C55E; /* green-500 */
-        --color-success-glow: rgba(34, 197, 94, 0.1);
+        --color-accent-primary-text: #89B3FB;
+
+        /* State Palette */
+        --color-success: #22C55E;
+        --color-success-text: #6EE7B7;
+        --color-success-bg: rgba(34, 197, 94, 0.1);
         --color-success-border: rgba(34, 197, 94, 0.3);
-        --color-warning: #F59E0B; /* amber-500 */
-        --color-error: #EF4444; /* red-500 */
+
+        --color-error: #EF4444;
+        --color-error-text: #F87171;
+        --color-error-bg: rgba(239, 68, 68, 0.1);
+        --color-error-border: rgba(239, 68, 68, 0.3);
+
+        --color-info: #38BDF8;
+        --color-info-text: #7DD3FC;
+        --color-info-bg: rgba(56, 189, 248, 0.1);
+        --color-info-border: rgba(56, 189, 248, 0.3);
       }
       
       @keyframes aurora {
         0% { background-position: 0% 50%; }
         50% { background-position: 100% 50%; }
         100% { background-position: 0% 50%; }
+      }
+      
+      @keyframes shimmer {
+        0%, 100% { background-position: -100% 0; }
+        50% { background-position: 100% 0; }
+      }
+
+      @keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+      @keyframes fade-in-scale-up { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+      @keyframes slide-in-from-bottom { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+      @keyframes panel-pulse {
+        0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-primary-glow); }
+        50% { box-shadow: 0 0 20px 0 var(--color-accent-primary-glow); }
       }
 
       body {
@@ -50,16 +74,28 @@
         overflow: hidden;
         overscroll-behavior: none;
         background-color: var(--color-bg-dark);
-        background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.1) 0px, transparent 50%), radial-gradient(at 97% 21%, hsla(135, 98%, 61%, 0.1) 0px, transparent 50%), radial-gradient(at 52% 99%, hsla(355, 98%, 61%, 0.1) 0px, transparent 50%), radial-gradient(at 10% 29%, hsla(256, 96%, 61%, 0.15) 0px, transparent 50%), radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.1) 0px, transparent 50%), radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.15) 0px, transparent 50%), radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.1) 0px, transparent 50%);
-        background-size: 200% 200%;
-        animation: aurora 20s ease infinite;
+        position: relative;
       }
 
+      body::before {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        z-index: -1;
+        background-image: 
+          radial-gradient(at 20% 30%, var(--color-accent-secondary-glow) 0px, transparent 50%),
+          radial-gradient(at 80% 70%, var(--color-accent-primary-glow) 0px, transparent 50%);
+        background-size: 200% 200%;
+        animation: aurora 20s ease infinite;
+        will-change: background-position;
+      }
+      
       #root {
         height: 100vh;
         width: 100%;
         display: flex;
         flex-direction: column;
+        animation: fade-in 0.6s ease-out;
       }
       
       .chat-scrollbar::-webkit-scrollbar {
@@ -79,10 +115,20 @@
       .glass-panel {
         background-color: var(--color-panel);
         border: 1px solid var(--color-border);
-        backdrop-filter: blur(12px);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
         box-shadow: 
-          0 8px 32px 0 rgba(0, 0, 0, 0.2),
-          inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+          0 8px 32px 0 rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 0 rgba(255, 255, 255, 0.07);
+      }
+
+      .input-glow-ring:focus-within, .input-glow-ring:focus {
+        box-shadow: 0 0 0 3px var(--color-accent-primary-glow), 0 0 0 1px var(--color-accent-primary);
+        border-color: var(--color-accent-primary);
+      }
+
+      .glowing-panel {
+        animation: panel-pulse 6s ease-in-out infinite;
       }
     </style>
   <script type="importmap">

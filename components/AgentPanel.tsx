@@ -36,19 +36,19 @@ const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, statu
   }> = {
     inactive: {
       ring: 'border-[var(--color-border)] hover:border-[var(--color-accent-primary)]',
-      iconBg: 'bg-gray-100 text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent-primary)]',
+      iconBg: 'bg-white/5 text-[var(--color-text-secondary)] group-hover:text-[var(--color-accent-primary)]',
       opacity: 'opacity-60 group-hover:opacity-100',
-      statusIndicator: <div className="w-2.5 h-2.5 rounded-full bg-gray-300 group-hover:bg-gray-400" />,
-      progressBg: 'bg-gray-200',
+      statusIndicator: <div className="w-2.5 h-2.5 rounded-full bg-slate-600 group-hover:bg-slate-400" />,
+      progressBg: 'bg-white/5',
       progressFill: 'w-0',
-      progressFillColor: 'bg-gray-400'
+      progressFillColor: 'bg-slate-400'
     },
     pending: {
-      ring: 'border-gray-300',
-      iconBg: 'bg-gray-100 text-[var(--color-text-secondary)]',
+      ring: 'border-[var(--color-border)]',
+      iconBg: 'bg-white/5 text-[var(--color-text-secondary)]',
       opacity: 'opacity-40',
-      statusIndicator: <div className="w-2.5 h-2.5 rounded-full bg-gray-400 animate-pulse" />,
-      progressBg: 'bg-gray-200',
+      statusIndicator: <div className="w-2.5 h-2.5 rounded-full bg-sky-500 animate-pulse" />,
+      progressBg: 'bg-white/5',
       progressFill: 'w-0',
       progressFillColor: 'bg-[var(--color-accent-primary)]'
     },
@@ -62,20 +62,20 @@ const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, statu
       progressFillColor: 'bg-[var(--color-accent-primary)]'
     },
     completed: {
-      ring: 'border-green-300',
-      iconBg: 'bg-green-100 text-[var(--color-success)]',
+      ring: 'border-[var(--color-success-border)]',
+      iconBg: 'bg-[var(--color-success-bg)] text-[var(--color-success)]',
       opacity: 'opacity-100',
       statusIndicator: <Checkmark className="w-5 h-5 text-[var(--color-success)]" />,
-      progressBg: 'bg-green-100',
+      progressBg: 'bg-[var(--color-success-bg)]',
       progressFill: 'w-full',
       progressFillColor: 'bg-[var(--color-success)]'
     },
     error: {
-      ring: 'border-red-300',
-      iconBg: 'bg-red-100 text-[var(--color-error)]',
+      ring: 'border-[var(--color-error-border)]',
+      iconBg: 'bg-[var(--color-error-bg)] text-[var(--color-error)]',
       opacity: 'opacity-100',
       statusIndicator: <XMark className="w-5 h-5 text-[var(--color-error)]" />,
-      progressBg: 'bg-red-100',
+      progressBg: 'bg-[var(--color-error-bg)]',
       progressFill: 'w-full',
       progressFillColor: 'bg-[var(--color-error)]'
     }
@@ -170,7 +170,7 @@ const AgentPanel: React.FC<AgentPanelProps> = ({ agentStatuses, styleDnaLibrary,
               />
             ))
           ) : (
-            <div className="text-xs text-center text-[var(--color-text-secondary)] p-4 bg-[var(--color-panel)] border border-[var(--color-border)] rounded-xl glowing-panel">
+            <div className="text-xs text-center text-[var(--color-text-secondary)] p-4 bg-[var(--color-panel)] border border-[var(--color-border)] rounded-xl">
               <p>Save styles from generated variants to create your library.</p>
             </div>
           )}

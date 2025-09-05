@@ -19,7 +19,7 @@ const ChatBubble: React.FC<{ message: ChatMessage }> = ({ message }) => {
   if (isSystem) {
     return (
       <div className="w-full flex justify-center my-4">
-        <div className="max-w-[85%] px-3 py-2 text-center text-sm text-[var(--color-text-secondary)]">
+        <div className="max-w-[85%] px-3 py-2 text-center text-xs text-[var(--color-text-tertiary)] bg-white/5 rounded-full">
           {message.content}
         </div>
       </div>
@@ -28,7 +28,7 @@ const ChatBubble: React.FC<{ message: ChatMessage }> = ({ message }) => {
 
   return (
     <div className={`w-full flex ${isUser ? 'justify-end' : 'justify-start'}`}>
-      <div className={`max-w-[85%] p-3 rounded-xl border ${isUser ? 'bg-blue-50 border-blue-200' : 'bg-gray-100 border-gray-200'}`}>
+      <div className={`max-w-[85%] p-3 rounded-xl border ${isUser ? 'bg-blue-500/10 border-blue-500/20' : 'bg-white/5 border-white/10'}`}>
          {!isUser && <div className="text-xs font-semibold text-[var(--color-accent-primary)] mb-1">{message.role}</div>}
         <p className="text-sm whitespace-pre-wrap text-[var(--color-text-primary)] leading-relaxed">{message.content}</p>
       </div>
@@ -113,8 +113,8 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ messages, onSendMessage, onGenera
                   onClick={() => toggleMood(mood)}
                   className={`px-3 py-1.5 text-xs font-medium rounded-lg border transition-all ${
                     selectedMoods.includes(mood) 
-                      ? 'bg-[var(--color-accent-primary-glow)] border-[var(--color-accent-primary)] text-[var(--color-accent-primary)]' 
-                      : 'bg-white border-[var(--color-border)] hover:border-gray-300 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
+                      ? 'bg-[var(--color-accent-primary-glow)] border-[var(--color-accent-primary)]/50 text-[var(--color-accent-primary)]' 
+                      : 'bg-white/5 border-transparent hover:border-white/20 text-[var(--color-text-secondary)] hover:text-[var(--color-text-primary)]'
                   }`}
                 >
                   {mood}
@@ -122,14 +122,14 @@ const ChatPanel: React.FC<ChatPanelProps> = ({ messages, onSendMessage, onGenera
               ))}
           </div>
         )}
-        <form onSubmit={handleSend} className="flex items-center gap-3">
+        <form onSubmit={handleSend} className="flex items-center gap-3 p-1 rounded-2xl bg-black/20 border border-transparent transition-all duration-300 focus-within:border-[var(--color-border-heavy)] focus-within:shadow-[0_0_12px_0_var(--color-glow-ring)]">
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder={placeholderText}
             disabled={isLoading || (!isGenerationMode && !selectedVariant)}
-            className="flex-grow bg-white border border-[var(--color-border)] rounded-xl py-2.5 px-4 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] focus:ring-1 focus:ring-[var(--color-accent-primary)] focus:outline-none focus:border-[var(--color-accent-primary)] transition-all disabled:opacity-50"
+            className="flex-grow bg-transparent border-none rounded-xl py-2.5 px-4 text-[var(--color-text-primary)] placeholder:text-[var(--color-text-secondary)] focus:ring-0 focus:outline-none transition-all disabled:opacity-50"
           />
           <button
             type="submit"

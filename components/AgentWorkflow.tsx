@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { Agent, AgentStatus } from '../types';
 import { AGENTS } from '../constants';
+// FIX: Import newly added preview icons
 import { Checkmark, XMark, OrchestratorPreview, ArchitectPreview, CuratorPreview, GeneratorPreview, QAPreview } from './Icons';
 
 interface AgentWorkflowProps {
@@ -17,8 +18,8 @@ const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, statu
     inactive: { ring: 'border-[var(--color-border)]', iconBg: 'bg-white/5 text-[var(--color-text-secondary)]', statusIndicator: <div className="w-2 h-2 rounded-full bg-slate-600" />, },
     pending: { ring: 'border-[var(--color-border)]', iconBg: 'bg-white/5 text-[var(--color-text-secondary)]', statusIndicator: <div className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />, },
     working: { ring: 'border-transparent ring-2 ring-[var(--color-accent-primary)] shadow-2xl shadow-[var(--color-accent-primary-glow)]', iconBg: 'bg-[var(--color-accent-primary-glow)] text-[var(--color-accent-primary)]', statusIndicator: <LoadingSpinner />, },
-    completed: { ring: 'border-green-500/30', iconBg: 'bg-green-500/10 text-[var(--color-success)]', statusIndicator: <Checkmark className="w-4 h-4 text-[var(--color-success)]" />, },
-    error: { ring: 'border-red-500/30', iconBg: 'bg-red-500/10 text-[var(--color-error)]', statusIndicator: <XMark className="w-4 h-4 text-[var(--color-error)]" />, }
+    completed: { ring: 'border-[var(--color-success-border)]', iconBg: 'bg-[var(--color-success-bg)] text-[var(--color-success)]', statusIndicator: <Checkmark className="w-4 h-4 text-[var(--color-success)]" />, },
+    error: { ring: 'border-[var(--color-error-border)]', iconBg: 'bg-[var(--color-error-bg)] text-[var(--color-error)]', statusIndicator: <XMark className="w-4 h-4 text-[var(--color-error)]" />, }
   };
   
   const currentConfig = stateConfig[status];
@@ -134,9 +135,10 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
 
         <div className="absolute flex flex-col items-center justify-center text-center">
           <div className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center">
-            <div className="absolute inset-0 bg-slate-800/50 rounded-full border border-[var(--color-border)] shadow-2xl shadow-black/50"></div>
-            <div className="absolute inset-[-4px] border border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-30"></div>
-             <div className="absolute inset-[-8px] border border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-20 delay-500"></div>
+            <div className="absolute inset-0 bg-black/30 rounded-full border border-[var(--color-border)] shadow-2xl shadow-black/50"></div>
+            <div className="absolute inset-0 border border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-50"></div>
+             <div className="absolute inset-[-6px] border-2 border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-30 delay-500"></div>
+             <div className="absolute inset-[4px] bg-gradient-to-br from-[var(--color-accent-primary-glow)] to-transparent rounded-full animate-pulse delay-1000"></div>
             <div className="relative z-10 p-4">
               <h2 className="text-lg md:text-xl font-bold font-['Space_Grotesk'] text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-text-primary)] to-[var(--color-text-secondary)]">
                 {title}
@@ -160,10 +162,10 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
                 key={agent.id}
                 className="absolute top-1/2 left-1/2"
                 style={{
-                  transition: 'transform 700ms ease-out, opacity 500ms ease-in-out',
+                  transition: 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease-in-out',
                   transform: isAssembled 
                     ? `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${currentStatus === 'working' ? 1.05 : 1})`
-                    : 'translate(-50%, -50%) scale(0)',
+                    : 'translate(-50%, -50%) scale(0.5)',
                   zIndex: currentStatus === 'working' ? 10 : 5,
                   opacity: isAssembled ? (isDimmed ? 0.4 : 1) : 0,
                 }}

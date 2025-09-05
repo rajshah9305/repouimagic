@@ -20,10 +20,10 @@ const VariantCard: React.FC<{
   return (
     <div
       onClick={onClick}
-      className={`relative h-32 bg-slate-800 border rounded-xl overflow-hidden cursor-pointer transition-all duration-300 group ${
+      className={`relative h-32 bg-[var(--color-panel-solid)] border rounded-xl overflow-hidden cursor-pointer transition-all duration-300 group ${
         isSelected 
           ? 'border-transparent ring-2 ring-offset-2 ring-offset-[var(--color-bg-dark)] ring-[var(--color-accent-primary)] shadow-2xl shadow-[var(--color-accent-primary-glow)]' 
-          : 'border-[var(--color-border)] hover:border-[var(--color-border-heavy)]'
+          : 'border-[var(--color-border)] hover:border-[var(--color-border-heavy)] hover:transform hover:-translate-y-1 hover:shadow-lg'
       }`}
     >
       <iframe

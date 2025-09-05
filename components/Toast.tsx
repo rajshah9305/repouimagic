@@ -11,14 +11,14 @@ interface ToastProps {
 
 const toastConfig = {
   success: {
-    bgColor: 'bg-green-500/10',
-    borderColor: 'border-green-500/30',
-    textColor: 'text-green-400',
+    bgColor: 'bg-[var(--color-success-bg)]',
+    borderColor: 'border-[var(--color-success-border)]',
+    textColor: 'text-[var(--color-success-text)]',
   },
   info: {
-    bgColor: 'bg-sky-500/10',
-    borderColor: 'border-sky-500/30',
-    textColor: 'text-sky-400',
+    bgColor: 'bg-[var(--color-info-bg)]',
+    borderColor: 'border-[var(--color-info-border)]',
+    textColor: 'text-[var(--color-info-text)]',
   }
 }
 

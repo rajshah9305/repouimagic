@@ -13,10 +13,12 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
       role="dialog"
       aria-modal="true"
       aria-labelledby="settings-title"
+      style={{ animation: 'fade-in 0.3s' }}
     >
       <div 
         className="glass-panel rounded-2xl w-full max-w-md m-4 p-6 text-[var(--color-text-primary)]"
         onClick={e => e.stopPropagation()}
+        style={{ animation: 'fade-in-scale-up 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}
       >
         <div className="flex items-center justify-between mb-4">
           <h2 id="settings-title" className="text-xl font-bold font-['Space_Grotesk']">
@@ -24,7 +26,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
           </h2>
           <button 
             onClick={onClose}
-            className="p-1 rounded-full text-[var(--color-text-secondary)] hover:bg-white/10 hover:text-[var(--color-text-primary)]"
+            className="p-1 rounded-full text-[var(--color-text-secondary)] hover:bg-white/10 hover:text-[var(--color-text-primary)] transition-colors"
             aria-label="Close settings"
           >
             <CloseIcon className="w-6 h-6" />
@@ -49,7 +51,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
         <div className="mt-6 text-right">
           <button 
             onClick={onClose}
-            className="px-4 py-2 bg-[var(--color-accent-primary)] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity"
+            className="px-4 py-2 bg-[var(--color-accent-primary)] text-white rounded-lg font-semibold hover:opacity-90 transition-opacity active:scale-95"
           >
             Got it
           </button>

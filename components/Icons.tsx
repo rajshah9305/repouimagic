@@ -4,164 +4,246 @@ interface IconProps {
   className?: string;
 }
 
+// Redesigned with a clean, unified line-art style
+
 export const PromptEngineeringIcon: React.FC<IconProps> = ({ className }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <circle cx="12" cy="12" r="10" fill="currentColor" opacity="0.15"/>
-    <path d="M10 7L12 9L14 7L12 5L10 7Z" fill="currentColor"/>
-    <path d="M7 10L9 12L7 14L5 12L7 10Z" fill="currentColor"/>
-    <path d="M17 10L19 12L17 14L15 12L17 10Z" fill="currentColor"/>
-    <path d="M10 17L12 19L14 17L12 15L10 17Z" fill="currentColor"/>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M12 3L12 5"/>
+    <path d="M12 19L12 21"/>
+    <path d="M3 12L5 12"/>
+    <path d="M19 12L21 12"/>
+    <path d="M5.63001 5.63001L7.04001 7.04001"/>
+    <path d="M16.96 16.96L18.37 18.37"/>
+    <path d="M5.63001 18.37L7.04001 16.96"/>
+    <path d="M16.96 7.04001L18.37 5.63001"/>
+    <circle cx="12" cy="12" r="3"/>
   </svg>
 );
 
 export const UIUXDesignerIcon: React.FC<IconProps> = ({ className }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M12 3L21 12L12 21L3 12L12 3Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="3" y="3" width="18" height="18" rx="2"/>
+    <path d="M3 9H21"/>
+    <path d="M9 21V9"/>
   </svg>
 );
 
 export const CodeGenerationIcon: React.FC<IconProps> = ({ className }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/>
-    <circle cx="12" cy="12" r="6" stroke="currentColor" strokeWidth="1.5" strokeDasharray="2 2"/>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M7 8L3 12L7 16"/>
+    <path d="M17 8L21 12L17 16"/>
+    <path d="M14 4L10 20"/>
   </svg>
 );
 
 export const DebuggingIcon: React.FC<IconProps> = ({ className }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M6 8.5C6 7.11929 7.11929 6 8.5 6H15.5C16.8807 6 18 7.11929 18 8.5V15.5C18 16.8807 16.8807 18 15.5 18H8.5C7.11929 18 6 16.8807 6 15.5V8.5Z" stroke="currentColor" strokeWidth="1.5"/>
-    <path d="M9.5 9.5L14.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-    <path d="M14.5 9.5L9.5 14.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M20 9V7C20 5.89543 19.1046 5 18 5H6C4.89543 5 4 5.89543 4 7V17C4 18.1046 4.89543 19 6 19H9"/>
+    <path d="M12 12H15C15.5523 12 16 11.5523 16 11V8C16 7.44772 15.5523 7 15 7H12C11.4477 7 11 7.44772 11 8V11C11 11.5523 11.4477 12 12 12Z"/>
+    <path d="M12 15.5V13"/>
+    <path d="M12 6V7"/>
+    <path d="M8 10H11"/>
+    <path d="M16 10H19"/>
+    <path d="M14 19L16 21"/>
+    <path d="M18 17L20 19"/>
+    <path d="M18 21L20 19"/>
+    <path d="M14 17L16 19"/>
   </svg>
 );
 
 export const Send: React.FC<IconProps> = ({ className }) => (
-    <svg fill="none" strokeWidth="1.5" className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5"></path></svg>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M22 2L11 13"/>
+    <path d="M22 2L15 22L11 13L2 9L22 2Z"/>
+  </svg>
 );
 
 export const Settings: React.FC<IconProps> = ({ className }) => (
-  <svg fill="none" strokeWidth="1.5" className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-1.007 1.11-.962a48.507 48.507 0 0111.456 0c.55.045 1.02.42 1.11.962l.094.542c.065.374.028.756-.106 1.112a48.294 48.294 0 01-3.522 4.774.75.75 0 00-.217 1.055l.217.364a48.18 48.18 0 01-6.758 11.238.75.75 0 00-1.055-.217l-.364-.217a48.293 48.293 0 01-4.774-3.522.75.75 0 00-1.112-.106l-.542.094c-.542.09-.962.56-1.007 1.11a48.507 48.507 0 010 11.456c-.045.55-.42 1.02-.962 1.11l-.542.094c-.374.065-.756.028-1.112-.106a48.293 48.293 0 01-4.774-3.522.75.75 0 00-1.055.217l-.217.364a48.18 48.18 0 01-11.238-6.758.75.75 0 00.217-1.055l.217-.364a48.294 48.294 0 013.522-4.774.75.75 0 00.106-1.112l-.094-.542c-.09-.542-.56-1.007-1.11-.962a48.507 48.507 0 01-11.456 0c-.55-.045-1.02-.42-1.11-.962l-.094-.542c-.065-.374-.028-.756.106-1.112a48.294 48.294 0 013.522-4.774.75.75 0 00.217-1.055l-.217-.364a48.18 48.18 0 016.758-11.238.75.75 0 001.055.217l.364.217a48.293 48.293 0 014.774 3.522.75.75 0 001.112.106l.542-.094zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z"></path></svg>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M12.2201 2.29002C12.0801 2.11002 11.9201 2.11002 11.7801 2.29002C10.7101 3.65002 9.07008 4.39002 7.39008 4.20002C6.44008 4.09002 5.56008 3.75002 4.78008 3.22002C4.57008 3.09002 4.34008 3.18002 4.22008 3.38002L2.38008 6.44002C2.26008 6.64002 2.34008 6.88002 2.54008 6.99002C3.26008 7.43002 4.06008 7.72002 4.89008 7.82002C6.71008 8.03002 8.42008 7.22002 9.42008 5.76002C9.56008 5.58002 9.72008 5.58002 9.86008 5.76002L11.7001 8.82002C11.5801 9.02002 11.5001 9.25002 11.6101 9.45002C11.1701 10.1701 10.8801 10.9701 10.7801 11.8001C10.6701 12.7501 11.0101 13.6301 11.5401 14.4101C11.6701 14.6201 11.5801 14.8501 11.3801 14.9701L8.32008 16.8101C8.12008 16.9301 7.88008 16.8501 7.78008 16.6501C7.34008 15.9301 6.71008 15.3001 5.96008 14.8201C5.76008 14.6901 5.52008 14.7801 5.40008 14.9801L2.24008 20.1201C2.12008 20.3201 2.21008 20.5501 2.41008 20.6701C3.67008 21.4901 5.15008 21.9401 6.67008 21.9401C9.25008 21.9401 11.6001 20.7601 13.1201 18.8101C13.3001 18.5701 13.3001 18.2301 13.1201 17.9901L10.0601 13.1301C9.86008 12.8701 9.92008 12.5301 10.1801 12.3301C10.7601 11.8701 11.2101 11.2301 11.4501 10.5101L14.2201 5.42002C14.3901 5.12002 14.2301 4.75002 13.9001 4.59002L12.2201 2.29002Z"/>
+    <path d="M14.88 12.54C15.34 11.56 16.14 10.76 17.12 10.3C17.33 10.21 17.56 10.3 17.68 10.5L19.52 13.56C19.64 13.76 19.56 14 19.36 14.11C18.64 14.55 17.84 14.84 17.01 14.94C15.19 15.15 13.48 14.34 12.48 12.88C12.34 12.7 12.34 12.52 12.48 12.34L14.88 8.65999C14.78 8.87999 14.7 9.11999 14.81 9.31999C15.25 10.04 15.54 10.84 15.64 11.67C15.75 12.62 15.41 13.5 14.88 14.28"/>
+    <path d="M19.79 5.21002C19.79 7.97002 17.76 10.21 15.29 10.21C14.08 10.21 13.01 9.68002 12.23 8.80002"/>
+  </svg>
 );
 
 export const SlidersHorizontal: React.FC<IconProps> = ({ className }) => (
-  <svg fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className={className} xmlns="http://www.w3.org/2000/svg">
-    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M3 6H21"/>
+    <path d="M3 12H21"/>
+    <path d="M3 18H21"/>
+    <circle cx="8" cy="6" r="2" transform="rotate(90 8 6)" fill="currentColor" stroke="none"/>
+    <circle cx="16" cy="12" r="2" transform="rotate(90 16 12)" fill="currentColor" stroke="none"/>
+    <circle cx="12" cy="18" r="2" transform="rotate(90 12 18)" fill="currentColor" stroke="none"/>
   </svg>
 );
 
 export const CloseIcon: React.FC<IconProps> = ({ className }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M18 6L6 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-    <path d="M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M18 6L6 18"/>
+    <path d="M6 6L18 18"/>
   </svg>
 );
 
-export const Code: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" /></svg>;
-export const Download: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3" /></svg>;
-export const Palette: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" /></svg>;
-export const Sparkles: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456zM16.898 20.562L16.25 22.5l-.648-1.938a3.375 3.375 0 00-2.672-2.672L11.25 18l1.938-.648a3.375 3.375 0 002.672-2.672L16.25 13.5l.648 1.938a3.375 3.375 0 002.672 2.672L21 18l-1.938.648a3.375 3.375 0 00-2.672 2.672z" /></svg>;
-export const Eye: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.432 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" /><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>;
-export const Copy: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" /></svg>;
-export const ExternalLink: React.FC<IconProps> = ({ className }) => <svg fill="none" strokeWidth={1.5} className={className} viewBox="0 0 24 24" stroke="currentColor" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" /></svg>;
-export const Bookmark: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}><path strokeLinecap="round" strokeLinejoin="round" d="M17.25 9.75v10.5l-5.25-3.375L6.75 20.25V9.75m10.5-6H6.75a2.25 2.25 0 00-2.25 2.25v10.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V5.25a2.25 2.25 0 00-2.25-2.25z" /></svg>;
-export const Refresh: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0011.664 0l3.181-3.183m-4.991-2.696L19.015 5.98m-14.03 0l3.181 3.183A8.25 8.25 0 0018.817 15.421l3.181-3.183" /></svg>;
-export const Shuffle: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M19.95 9.358c.234-.44.436-.902.6-1.383m-1.2 1.383c-.374.966-.824 1.88-1.36 2.733m1.36-2.733l-2.04 2.04m2.04-2.04l-2.04-2.04m-2.04 2.04c-.966.374-1.88.824-2.733 1.36m2.733-1.36l-2.04 2.04M4.05 14.642c-.234.44-.436.902-.6 1.383m1.2-1.383c.374-.966.824-1.88 1.36-2.733m-1.36 2.733l2.04-2.04m-2.04 2.04l2.04 2.04m2.04-2.04c.966-.374 1.88-.824 2.733-1.36m-2.733 1.36l2.04-2.04" /><path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9 9 0 100-18 9 9 0 000 18z" /></svg>;
-export const Expand: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M3.75 3.75v4.5m0-4.5h4.5m-4.5 0L9 9M3.75 20.25v-4.5m0 4.5h4.5m-4.5 0L9 15M20.25 3.75h-4.5m4.5 0v4.5m0-4.5L15 9m4.5 11.25h-4.5m4.5 0v-4.5m0 4.5L15 15" /></svg>;
-export const ChevronUp: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>;
-export const Checkmark: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>;
-export const XMark: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>;
+export const Code: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M7 8L3 12L7 16"/>
+    <path d="M17 8L21 12L17 16"/>
+    <path d="M14 4L10 20"/>
+  </svg>
+);
+export const Download: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15"/>
+    <path d="M7 10L12 15L17 10"/>
+    <path d="M12 15V3"/>
+  </svg>
+);
+export const Palette: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M13.2,21.6c-0.6,0-1.2-0.2-1.6-0.6l-8-8c-0.9-0.9-0.9-2.3,0-3.2l4-4c0.9-0.9,2.3-0.9,3.2,0l8,8c0.9,0.9,0.9,2.3,0,3.2l-4,4 C14.4,21.4,13.8,21.6,13.2,21.6z"/>
+    <path d="M12.9 5.8L18.2 11.1"/>
+    <path d="M10.8 7.9L16.1 13.2"/>
+    <path d="M8.7 10L14 15.3"/>
+    <path d="M22 6.8L17.2 2"/>
+    <path d="M16 1.2c-0.8-0.8-0.8-2-0.8-2"/>
+  </svg>
+);
+export const Sparkles: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M12 3L9.65 9.65L3 12L9.65 14.35L12 21L14.35 14.35L21 12L14.35 9.65L12 3Z"/>
+    <path d="M3 21L9.65 14.35"/>
+    <path d="M21 3L14.35 9.65"/>
+  </svg>
+);
+export const Eye: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M1 12C1 12 5 4 12 4C19 4 23 12 23 12C23 12 19 20 12 20C5 20 1 12 1 12Z"/>
+    <circle cx="12" cy="12" r="3"/>
+  </svg>
+);
+export const Copy: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+    <path d="M5 15H4C2.89543 15 2 14.1046 2 13V4C2 2.89543 2.89543 2 4 2H13C14.1046 2 15 2.89543 15 4V5"/>
+  </svg>
+);
+export const ExternalLink: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M18 13V19C18 19.5304 17.7893 20.0391 17.4142 20.4142C17.0391 20.7893 16.5304 21 16 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V8C3 7.46957 3.21071 6.96086 3.58579 6.58579C3.96086 6.21071 4.46957 6 5 6H11"/>
+    <path d="M15 3H21V9"/>
+    <path d="M10 14L21 3"/>
+  </svg>
+);
+export const Bookmark: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M19 21L12 17.5L5 21V5C5 4.46957 5.21071 3.96086 5.58579 3.58579C5.96086 3.21071 6.46957 3 7 3H17C17.5304 3 18.0391 3.21071 18.4142 3.58579C18.7893 3.96086 19 4.46957 19 5V21Z"/>
+  </svg>
+);
+export const Refresh: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M23 4V10H17"/>
+    <path d="M1 20V14H7"/>
+    <path d="M3.51 9.49001C4.00133 7.40424 5.22152 5.57245 6.93657 4.3121C8.65162 3.05175 10.7495 2.44962 12.8988 2.62804C15.048 2.80645 17.0818 3.7543 18.6323 5.30481C20.1828 6.85532 21.1306 8.8891 21.309 11.0383C21.4875 13.1876 20.8853 15.2855 19.625 16.9996C18.3646 18.7136 16.5328 19.9338 14.447 20.4251C12.3613 20.9165 10.2307 20.6272 8.36001 19.64"/>
+  </svg>
+);
+export const Shuffle: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M16 3H21V8"/>
+    <path d="M4 20L21 3"/>
+    <path d="M21 16V21H16"/>
+    <path d="M15 15L21 21"/>
+    <path d="M4 4L9 9"/>
+  </svg>
+);
+export const Expand: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M15 3H21V9"/>
+    <path d="M9 21H3V15"/>
+    <path d="M21 3L14 10"/>
+    <path d="M3 21L10 14"/>
+  </svg>
+);
+export const ChevronUp: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M18 15L12 9L6 15"/>
+  </svg>
+);
+export const Checkmark: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M20 6L9 17L4 12"/>
+  </svg>
+);
+export const XMark: React.FC<IconProps> = ({ className }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M18 6L6 18"/>
+    <path d="M6 6L18 18"/>
+  </svg>
+);
 
 
-/* Agent Previews */
+/* Agent Previews - Redesigned for cleaner, more modern animations */
 export const OrchestratorPreview: React.FC<IconProps> = ({ className }) => (
   <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <circle cx="20" cy="30" r="6" fill="currentColor" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/></circle>
-    <circle cx="60" cy="30" r="6" fill="currentColor" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="0.5s" repeatCount="indefinite"/></circle>
-    <circle cx="100" cy="30" r="6" fill="currentColor" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
-    <path d="M 26 30 L 54 30" stroke="currentColor" strokeWidth="1" strokeDasharray="4 2"><animate attributeName="stroke-dashoffset" from="6" to="0" dur="1s" repeatCount="indefinite"/></path>
-    <path d="M 66 30 L 94 30" stroke="currentColor" strokeWidth="1" strokeDasharray="4 2"><animate attributeName="stroke-dashoffset" from="6" to="0" dur="1s" begin="0.5s" repeatCount="indefinite"/></path>
+    <style>{`
+      .orb-orch { animation: orb-pulse 2s ease-in-out infinite; }
+      @keyframes orb-pulse { 0%, 100% { r: 5; opacity: 1; } 50% { r: 7; opacity: 0.7; } }
+      .line-orch { stroke-dasharray: 4 4; animation: line-flow-orch 1s linear infinite; }
+      @keyframes line-flow-orch { to { stroke-dashoffset: -8; } }
+    `}</style>
+    <circle cx="20" cy="30" r="5" fill="currentColor" className="orb-orch" style={{ animationDelay: '0s' }} />
+    <circle cx="60" cy="30" r="5" fill="currentColor" className="orb-orch" style={{ animationDelay: '0.3s' }} />
+    <circle cx="100" cy="30" r="5" fill="currentColor" className="orb-orch" style={{ animationDelay: '0.6s' }} />
+    <path d="M 25 30 L 55 30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="line-orch" style={{ animationDelay: '0s' }} />
+    <path d="M 65 30 L 95 30" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" className="line-orch" style={{ animationDelay: '0.3s' }} />
   </svg>
 );
+
 export const ArchitectPreview: React.FC<IconProps> = ({ className }) => (
   <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <g stroke="currentColor" strokeWidth="1.5" fill="none">
-        <path d="M20,50 L20,15 H55 V50" strokeDasharray="100">
-            <animate attributeName="stroke-dashoffset" values="100;0;100" dur="3s" repeatCount="indefinite" />
-        </path>
-        <path d="M65,15 H100" strokeDasharray="35">
-            <animate attributeName="stroke-dashoffset" values="35;0;35" dur="3s" begin="0.5s" repeatCount="indefinite" />
-        </path>
-        <path d="M65,30 H100" strokeDasharray="35">
-            <animate attributeName="stroke-dashoffset" values="35;0;35" dur="3s" begin="1s" repeatCount="indefinite" />
-        </path>
-         <path d="M65,45 H100" strokeDasharray="35">
-            <animate attributeName="stroke-dashoffset" values="35;0;35" dur="3s" begin="1.5s" repeatCount="indefinite" />
-        </path>
-    </g>
+    <style>{`
+      .box-arch { stroke-dasharray: 130; animation: draw-arch 3s ease-in-out infinite; }
+      @keyframes draw-arch { 0%, 100% { stroke-dashoffset: 130; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 130; } }
+      .line-arch-horiz, .line-arch-vert { stroke-dasharray: 80; animation: draw-line-arch 3s ease-in-out infinite; }
+      @keyframes draw-line-arch { 0% { stroke-dashoffset: 80; } 50% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 80; } }
+    `}</style>
+    <rect x="20" y="10" width="80" height="40" rx="2" stroke="currentColor" strokeWidth="1.5" fill="none" className="box-arch" />
   </svg>
 );
+
+{/* FIX: Add missing agent preview icons */}
 export const CuratorPreview: React.FC<IconProps> = ({ className }) => (
-    <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-      <circle cx="30" cy="30" r="12">
-          <animate attributeName="fill" values="#2563EB;#7C3AED;#16A34A;#2563EB" dur="4s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="60" cy="30" r="12">
-          <animate attributeName="fill" values="#7C3AED;#16A34A;#2563EB;#7C3AED" dur="4s" begin="1s" repeatCount="indefinite"/>
-      </circle>
-      <circle cx="90" cy="30" r="12">
-          <animate attributeName="fill" values="#16A34A;#2563EB;#7C3AED;#16A34A" dur="4s" begin="2s" repeatCount="indefinite"/>
-      </circle>
-    </svg>
-);
-export const GeneratorPreview: React.FC<IconProps> = ({ className }) => (
-  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className} fontFamily="'JetBrains Mono', monospace" fontSize="10">
-    <defs>
-        <clipPath id="clip1-gen">
-            <rect x="10" y="15" width="0" height="15">
-                <animate attributeName="width" values="0;100;100;0" dur="4s" repeatCount="indefinite" />
-            </rect>
-        </clipPath>
-        <clipPath id="clip2-gen">
-            <rect x="10" y="35" width="0" height="15">
-                <animate attributeName="width" values="0;0;80;80;0" dur="4s" repeatCount="indefinite" />
-            </rect>
-        </clipPath>
-    </defs>
-    <rect x="5" y="5" width="110" height="50" rx="3" fill="#1E293B" />
-    <g clipPath="url(#clip1-gen)">
-        <text x="10" y="25" fill="#818CF8">{`const Component = () => (`}</text>
-    </g>
-    <g clipPath="url(#clip2-gen)">
-        <text x="10" y="45" fill="#A5B4FC">{`  <button>Submit</button>`}</text>
-    </g>
-    <path stroke="#34D399" strokeWidth="2" strokeLinecap="round">
-        <animate attributeName="d" values="M10 25 h0; M108 25 h0; M10 45 h0; M90 45 h0; M10 25 h0" dur="4s" repeatCount="indefinite"/>
-        <animate attributeName="opacity" values="1;0;1;0;1" dur="1s" repeatCount="indefinite"/>
-    </path>
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <style>{`
+      .color-circle { animation: color-fade-in-out 3s ease-in-out infinite; }
+      @keyframes color-fade-in-out { 0%, 100% { opacity: 0; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1); } }
+    `}</style>
+    <circle cx="30" cy="30" r="10" fill="#3B82F6" className="color-circle" style={{ animationDelay: '0s' }} />
+    <circle cx="60" cy="30" r="10" fill="#10B981" className="color-circle" style={{ animationDelay: '0.5s' }} />
+    <circle cx="90" cy="30" r="10" fill="#F59E0B" className="color-circle" style={{ animationDelay: '1s' }} />
   </svg>
 );
+
+export const GeneratorPreview: React.FC<IconProps> = ({ className }) => (
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <style>{`
+      .bracket { animation: bracket-pulse 1.5s ease-in-out infinite; }
+      @keyframes bracket-pulse { 0%, 100% { transform: scaleX(1); } 50% { transform: scaleX(1.2); } }
+      .cursor { animation: blink 1s step-end infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+    `}</style>
+    <text x="35" y="35" fontFamily="monospace" fontSize="16" fill="currentColor" className="bracket" style={{ transformOrigin: 'center' }}>{'<'}</text>
+    <text x="80" y="35" fontFamily="monospace" fontSize="16" fill="currentColor" className="bracket" style={{ transformOrigin: 'center', animationDelay: '0.2s' }}>{'>'}</text>
+    <rect x="58" y="22" width="2" height="16" fill="currentColor" className="cursor" />
+  </svg>
+);
+
 export const QAPreview: React.FC<IconProps> = ({ className }) => (
   <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <g fill="none" strokeWidth="2">
-        <path d="M25 30 l5 5 l10 -10" stroke="#9CA3AF">
-            <animate attributeName="stroke" values="#9CA3AF;#16A34A;#16A34A;#9CA3AF" dur="3s" repeatCount="indefinite" />
-        </path>
-        <path d="M25 45 l5 5 l10 -10" stroke="#9CA3AF">
-            <animate attributeName="stroke" values="#9CA3AF;#16A34A;#16A34A;#9CA3AF" dur="3s" begin="0.2s" repeatCount="indefinite" />
-        </path>
-    </g>
-    <g fill="none" strokeWidth="1.5" stroke="#9CA3AF" strokeLinecap="round">
-        <path d="M75 25 l20 0">
-            <animate attributeName="stroke" values="#9CA3AF;#EF4444;#EF4444;#9CA3AF" dur="3s" begin="1s" repeatCount="indefinite" />
-        </path>
-        <path d="M75 35 l30 0" />
-        <path d="M75 45 l25 0" />
-    </g>
-    
-    <g>
-      <animateTransform attributeName="transform" type="translate" values="-10 0; 120 0; -10 0" dur="3s" repeatCount="indefinite" />
-      <circle cx="20" cy="35" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
-      <path d="M 28 43 L 36 51" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
-    </g>
+    <style>{`
+      .check, .cross { stroke-dasharray: 20; animation: draw-qa 2.5s ease-in-out infinite; }
+      @keyframes draw-qa { 0% { stroke-dashoffset: 20; } 40% { stroke-dashoffset: 0; } 100% { stroke-dashoffset: 0; } }
+    `}</style>
+    <path d="M 30 30 L 35 35 L 45 25" stroke="#10B981" strokeWidth="2" fill="none" className="check" style={{ animationDelay: '0s' }} />
+    <path d="M 75 25 L 85 35 M 75 35 L 85 25" stroke="#EF4444" strokeWidth="2" fill="none" className="cross" style={{ animationDelay: '1s' }} />
   </svg>
 );

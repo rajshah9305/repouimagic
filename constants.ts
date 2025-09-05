@@ -27,8 +27,8 @@ export const INITIAL_PREVIEW_CONTENT = `
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
     <style>
         body {
-            background-color: #F9FAFB;
-            color: #111827;
+            background-color: #0d0d0d;
+            color: #EAEAEA;
             font-family: 'Inter', sans-serif;
             display: flex;
             align-items: center;
@@ -38,21 +38,21 @@ export const INITIAL_PREVIEW_CONTENT = `
             text-align: center;
         }
         .container {
-            border: 1px solid #E5E7EB;
-            background-color: #FFFFFF;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background-color: #1a1a1a;
             padding: 2.5rem 3.5rem;
             border-radius: 1.5rem;
-            box-shadow: 0 4px 12px -2px rgba(37, 99, 235, 0.05), 0 4px 12px -2px rgba(124, 58, 237, 0.05);
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
         }
         h1 {
             font-family: 'Space Grotesk', sans-serif;
             font-weight: 700;
             font-size: 1.5rem;
-            color: #111827;
+            color: #FFFFFF;
             margin-bottom: 0.5rem;
         }
         p {
-            color: #6B7280;
+            color: #A0A0A0;
             max-width: 32ch;
             line-height: 1.5;
         }
