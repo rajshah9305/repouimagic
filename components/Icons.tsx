@@ -84,38 +84,84 @@ export const OrchestratorPreview: React.FC<IconProps> = ({ className }) => (
 );
 export const ArchitectPreview: React.FC<IconProps> = ({ className }) => (
   <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <rect x="10" y="10" width="40" height="40" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/></rect>
-    <rect x="60" y="15" width="50" height="15" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></rect>
-    <rect x="60" y="35" width="25" height="10" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="1s" repeatCount="indefinite"/></rect>
+    <g stroke="currentColor" strokeWidth="1.5" fill="none">
+        <path d="M20,50 L20,15 H55 V50" strokeDasharray="100">
+            <animate attributeName="stroke-dashoffset" values="100;0;100" dur="3s" repeatCount="indefinite" />
+        </path>
+        <path d="M65,15 H100" strokeDasharray="35">
+            <animate attributeName="stroke-dashoffset" values="35;0;35" dur="3s" begin="0.5s" repeatCount="indefinite" />
+        </path>
+        <path d="M65,30 H100" strokeDasharray="35">
+            <animate attributeName="stroke-dashoffset" values="35;0;35" dur="3s" begin="1s" repeatCount="indefinite" />
+        </path>
+         <path d="M65,45 H100" strokeDasharray="35">
+            <animate attributeName="stroke-dashoffset" values="35;0;35" dur="3s" begin="1.5s" repeatCount="indefinite" />
+        </path>
+    </g>
   </svg>
 );
 export const CuratorPreview: React.FC<IconProps> = ({ className }) => (
     <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-      <circle cx="30" cy="30" r="12" fill="#2563EB"><animate attributeName="opacity" values="1;0.2;1" dur="3s" repeatCount="indefinite"/></circle>
-      <circle cx="60" cy="30" r="12" fill="#7C3AED"><animate attributeName="opacity" values="1;0.2;1" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
-      <circle cx="90" cy="30" r="12" fill="#16A34A"><animate attributeName="opacity" values="1;0.2;1" dur="3s" begin="2s" repeatCount="indefinite"/></circle>
+      <circle cx="30" cy="30" r="12">
+          <animate attributeName="fill" values="#2563EB;#7C3AED;#16A34A;#2563EB" dur="4s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="60" cy="30" r="12">
+          <animate attributeName="fill" values="#7C3AED;#16A34A;#2563EB;#7C3AED" dur="4s" begin="1s" repeatCount="indefinite"/>
+      </circle>
+      <circle cx="90" cy="30" r="12">
+          <animate attributeName="fill" values="#16A34A;#2563EB;#7C3AED;#16A34A" dur="4s" begin="2s" repeatCount="indefinite"/>
+      </circle>
     </svg>
 );
 export const GeneratorPreview: React.FC<IconProps> = ({ className }) => (
-  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className} fontFamily="'JetBrains Mono', monospace" fontSize="12" fill="currentColor">
-    <text x="10" y="25">{`<div className="...">`}</text>
-    <text x="10" y="45">{`  <button>Submit</button>`}</text>
-    <rect x="8" y="10" width="104" height="40" fill="var(--color-bg)" >
-      <animate attributeName="width" from="104" to="0" dur="3s" repeatCount="indefinite"/>
-    </rect>
-    <path d="M 112 15 L 112 45" stroke="currentColor" strokeWidth="2">
-      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className} fontFamily="'JetBrains Mono', monospace" fontSize="10">
+    <defs>
+        <clipPath id="clip1-gen">
+            <rect x="10" y="15" width="0" height="15">
+                <animate attributeName="width" values="0;100;100;0" dur="4s" repeatCount="indefinite" />
+            </rect>
+        </clipPath>
+        <clipPath id="clip2-gen">
+            <rect x="10" y="35" width="0" height="15">
+                <animate attributeName="width" values="0;0;80;80;0" dur="4s" repeatCount="indefinite" />
+            </rect>
+        </clipPath>
+    </defs>
+    <rect x="5" y="5" width="110" height="50" rx="3" fill="#1E293B" />
+    <g clipPath="url(#clip1-gen)">
+        <text x="10" y="25" fill="#818CF8">{`const Component = () => (`}</text>
+    </g>
+    <g clipPath="url(#clip2-gen)">
+        <text x="10" y="45" fill="#A5B4FC">{`  <button>Submit</button>`}</text>
+    </g>
+    <path stroke="#34D399" strokeWidth="2" strokeLinecap="round">
+        <animate attributeName="d" values="M10 25 h0; M108 25 h0; M10 45 h0; M90 45 h0; M10 25 h0" dur="4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;0;1;0;1" dur="1s" repeatCount="indefinite"/>
     </path>
   </svg>
 );
 export const QAPreview: React.FC<IconProps> = ({ className }) => (
   <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
-    <path d="M30 25 L 35 30 L 45 20" stroke="#16A34A" strokeWidth="2" fill="none" />
-    <path d="M30 40 L 35 45 L 45 35" stroke="#16A34A" strokeWidth="2" fill="none" />
-    <g transform="translate(0, 0)">
-      <animateTransform attributeName="transform" type="translate" values="50 0; 80 0; 50 0" dur="3s" repeatCount="indefinite" />
-      <circle cx="20" cy="30" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
-      <path d="M 26 36 L 32 42" stroke="currentColor" strokeWidth="1.5" />
+    <g fill="none" strokeWidth="2">
+        <path d="M25 30 l5 5 l10 -10" stroke="#9CA3AF">
+            <animate attributeName="stroke" values="#9CA3AF;#16A34A;#16A34A;#9CA3AF" dur="3s" repeatCount="indefinite" />
+        </path>
+        <path d="M25 45 l5 5 l10 -10" stroke="#9CA3AF">
+            <animate attributeName="stroke" values="#9CA3AF;#16A34A;#16A34A;#9CA3AF" dur="3s" begin="0.2s" repeatCount="indefinite" />
+        </path>
+    </g>
+    <g fill="none" strokeWidth="1.5" stroke="#9CA3AF" strokeLinecap="round">
+        <path d="M75 25 l20 0">
+            <animate attributeName="stroke" values="#9CA3AF;#EF4444;#EF4444;#9CA3AF" dur="3s" begin="1s" repeatCount="indefinite" />
+        </path>
+        <path d="M75 35 l30 0" />
+        <path d="M75 45 l25 0" />
+    </g>
+    
+    <g>
+      <animateTransform attributeName="transform" type="translate" values="-10 0; 120 0; -10 0" dur="3s" repeatCount="indefinite" />
+      <circle cx="20" cy="35" r="10" stroke="currentColor" strokeWidth="2" fill="none" />
+      <path d="M 28 43 L 36 51" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" />
     </g>
   </svg>
 );

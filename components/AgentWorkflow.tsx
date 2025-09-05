@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import type { Agent, AgentStatus } from '../types';
 import { AGENTS } from '../constants';
 import { Checkmark, XMark, OrchestratorPreview, ArchitectPreview, CuratorPreview, GeneratorPreview, QAPreview } from './Icons';
@@ -8,74 +8,17 @@ interface AgentWorkflowProps {
   status: 'generating' | 'refining';
 }
 
-const AGENT_DESCRIPTIONS: Record<string, string> = {
-  orchestrator: 'Coordinates the entire AI crew to fulfill your request.',
-  architect: 'Structures the UI layout and component hierarchy.',
-  curator: 'Designs unique color palettes, fonts, and styles.',
-  generator: 'Writes the production-ready HTML and React code.',
-  qa: 'Checks for bugs, responsiveness, and accessibility issues.'
-}
-
 const LoadingSpinner: React.FC = () => <div className="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin"></div>;
 
 const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, status }) => {
   const Icon = agent.icon;
-  const description = AGENT_DESCRIPTIONS[agent.id] || "The specialist for this task.";
 
-  const stateConfig: Record<AgentStatus, {
-      ring: string;
-      iconBg: string;
-      opacity: string;
-      statusIndicator: React.ReactNode;
-      progressBg: string;
-      progressFill: string;
-      progressFillColor: string;
-  }> = {
-    inactive: {
-      ring: 'border-[var(--color-border)]',
-      iconBg: 'bg-gray-100 text-[var(--color-text-secondary)]',
-      opacity: 'opacity-40',
-      statusIndicator: <div className="w-2.5 h-2.5 rounded-full bg-gray-300" />,
-      progressBg: 'bg-gray-200',
-      progressFill: 'w-0',
-      progressFillColor: 'bg-gray-400'
-    },
-    pending: {
-      ring: 'border-gray-300',
-      iconBg: 'bg-gray-100 text-[var(--color-text-secondary)]',
-      opacity: 'opacity-60',
-      statusIndicator: <div className="w-2.5 h-2.5 rounded-full bg-gray-400 animate-pulse" />,
-      progressBg: 'bg-gray-200',
-      progressFill: 'w-0',
-      progressFillColor: 'bg-[var(--color-accent-primary)]'
-    },
-    working: {
-      ring: 'border-transparent ring-2 ring-[var(--color-accent-primary)] shadow-[0_0_20px_var(--color-accent-primary-glow)]',
-      iconBg: 'bg-[var(--color-accent-primary-glow)] text-[var(--color-accent-primary)]',
-      opacity: 'opacity-100',
-      statusIndicator: <LoadingSpinner />,
-      progressBg: `bg-[var(--color-accent-primary-glow)]`,
-      progressFill: 'w-full',
-      progressFillColor: 'bg-[var(--color-accent-primary)]'
-    },
-    completed: {
-      ring: 'border-green-300',
-      iconBg: 'bg-green-100 text-[var(--color-success)]',
-      opacity: 'opacity-100',
-      statusIndicator: <Checkmark className="w-5 h-5 text-[var(--color-success)]" />,
-      progressBg: 'bg-green-100',
-      progressFill: 'w-full',
-      progressFillColor: 'bg-[var(--color-success)]'
-    },
-    error: {
-      ring: 'border-red-300',
-      iconBg: 'bg-red-100 text-[var(--color-error)]',
-      opacity: 'opacity-100',
-      statusIndicator: <XMark className="w-5 h-5 text-[var(--color-error)]" />,
-      progressBg: 'bg-red-100',
-      progressFill: 'w-full',
-      progressFillColor: 'bg-[var(--color-error)]'
-    }
+  const stateConfig: Record<AgentStatus, { ring: string; iconBg: string; statusIndicator: React.ReactNode; }> = {
+    inactive: { ring: 'border-[var(--color-border)]', iconBg: 'bg-white/5 text-[var(--color-text-secondary)]', statusIndicator: <div className="w-2 h-2 rounded-full bg-slate-600" />, },
+    pending: { ring: 'border-[var(--color-border)]', iconBg: 'bg-white/5 text-[var(--color-text-secondary)]', statusIndicator: <div className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />, },
+    working: { ring: 'border-transparent ring-2 ring-[var(--color-accent-primary)] shadow-2xl shadow-[var(--color-accent-primary-glow)]', iconBg: 'bg-[var(--color-accent-primary-glow)] text-[var(--color-accent-primary)]', statusIndicator: <LoadingSpinner />, },
+    completed: { ring: 'border-green-500/30', iconBg: 'bg-green-500/10 text-[var(--color-success)]', statusIndicator: <Checkmark className="w-4 h-4 text-[var(--color-success)]" />, },
+    error: { ring: 'border-red-500/30', iconBg: 'bg-red-500/10 text-[var(--color-error)]', statusIndicator: <XMark className="w-4 h-4 text-[var(--color-error)]" />, }
   };
   
   const currentConfig = stateConfig[status];
@@ -89,67 +32,147 @@ const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, statu
   };
   
   return (
-    <div
-      className={`relative w-full text-left p-4 rounded-2xl transition-all duration-300 border ${currentConfig.ring} bg-[var(--color-panel)] ${currentConfig.opacity}`}
-    >
+    <div className={`w-56 text-left p-3 rounded-2xl transition-all duration-300 border ${currentConfig.ring} glass-panel`}>
       <div className="flex items-center">
-        <div className={`absolute top-3.5 right-3.5 flex items-center justify-center w-5 h-5 text-[var(--color-accent-primary)] transition-all duration-300`}>
-          {currentConfig.statusIndicator}
-        </div>
-        <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center mr-4 transition-colors duration-300 ${currentConfig.iconBg}`}>
-          <Icon className={`w-6 h-6`} />
+        <div className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center mr-3 transition-colors duration-300 ${currentConfig.iconBg}`}>
+          <Icon className="w-5 h-5" />
         </div>
         <div className="flex-1">
-          <h3 className="font-bold text-sm text-[var(--color-text-primary)]">{agent.name}</h3>
-          <p className="text-xs text-[var(--color-text-secondary)]">{description}</p>
+          <h3 className="font-semibold text-sm text-[var(--color-text-primary)]">{agent.name}</h3>
+        </div>
+        <div className="flex items-center justify-center w-5 h-5 text-[var(--color-accent-primary)] transition-all duration-300">
+          {currentConfig.statusIndicator}
         </div>
       </div>
       
-      {/* The cinematic preview area */}
-      <div className={`mt-3 rounded-lg overflow-hidden transition-all duration-500 ease-in-out ${status === 'working' ? 'h-24 opacity-100' : 'h-0 opacity-0'}`}>
-        <div className="w-full h-full bg-gray-500/10 backdrop-blur-sm border border-gray-500/20 p-2 text-[var(--color-accent-primary)]">
+      <div className={`mt-2.5 rounded-lg overflow-hidden transition-all duration-500 ease-in-out ${status === 'working' ? 'h-16 opacity-100' : 'h-0 opacity-0'}`}>
+        <div className="w-full h-full bg-black/20 backdrop-blur-sm border border-white/10 p-2 text-[var(--color-accent-primary)]">
           {agentPreviews[agent.id]}
         </div>
-      </div>
-      
-      <div className={`absolute bottom-0 left-0 right-0 h-1 rounded-b-xl overflow-hidden transition-colors duration-300 ${currentConfig.progressBg}`}>
-          <div className={`h-full transition-all duration-700 ease-in-out ${currentConfig.progressFill} ${currentConfig.progressFillColor}`} />
       </div>
     </div>
   );
 };
 
 const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) => {
-  const title = status === 'refining' ? 'Refining Your Component' : 'The Crew is on the Job';
-  const description = status === 'refining' ? 'The Code Generation agent is implementing your changes.' : 'Your request is being processed by our elite AI agents.';
-  const agentsToShow = status === 'refining' ? AGENTS.filter(a => ['orchestrator', 'generator'].includes(a.id)) : AGENTS;
+  const workflowRef = useRef<HTMLDivElement>(null);
+  const [radius, setRadius] = useState(200);
+  const [size, setSize] = useState({ width: 0, height: 0 });
+  const [isAssembled, setIsAssembled] = useState(false);
+
+  useEffect(() => {
+    const assemblyTimer = setTimeout(() => setIsAssembled(true), 100);
+    
+    const calculateLayout = () => {
+      if (workflowRef.current) {
+        const { width, height } = workflowRef.current.getBoundingClientRect();
+        setSize({ width, height });
+        const minDim = Math.min(width, height);
+        const newRadius = Math.max(140, (minDim - 250) / 2);
+        setRadius(newRadius);
+      }
+    };
+
+    let timeoutId: number | null = null;
+    const debouncedHandler = () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      timeoutId = window.setTimeout(calculateLayout, 100);
+    }
+
+    calculateLayout();
+    window.addEventListener('resize', debouncedHandler);
+    
+    return () => {
+      clearTimeout(assemblyTimer);
+      if (timeoutId) clearTimeout(timeoutId);
+      window.removeEventListener('resize', debouncedHandler);
+    };
+  }, []);
+
+  const title = status === 'refining' ? 'Refining Component' : 'Crew Assembling UI';
+  const description = status === 'refining' ? 'Implementing your changes...' : 'AI agents are bringing your vision to life.';
+  const agentsToShow = status === 'refining' ? AGENTS.filter(a => ['orchestrator', 'generator', 'qa'].includes(a.id)) : AGENTS;
+  const workingAgentIndex = agentsToShow.findIndex(a => agentStatuses[a.id] === 'working');
 
   return (
-    <div className="flex-grow bg-[var(--color-bg)] rounded-2xl glowing-panel flex flex-col items-center justify-center p-8 transition-all duration-500">
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold font-['Space_Grotesk'] text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-accent-primary)] to-[var(--color-accent-secondary)]">
-          {title}
-        </h2>
-        <p className="text-[var(--color-text-secondary)] max-w-md mx-auto">{description}</p>
-      </div>
-      <div className="w-full max-w-md">
-        <ul className="flex flex-col gap-3">
-          {agentsToShow.map((agent, index) => {
-              const currentStatus = agentStatuses[agent.id] || 'inactive';
-              const prevAgent = agentsToShow[index - 1];
-              const prevStatus = prevAgent ? (agentStatuses[prevAgent.id] || 'inactive') : 'completed';
-              const isFlowActive = prevStatus === 'completed' || prevStatus === 'working';
+    <div ref={workflowRef} className="flex-grow glass-panel rounded-2xl flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden h-full">
+      <div className="relative w-full h-full flex items-center justify-center">
+        
+        <svg width="100%" height="100%" className="absolute top-0 left-0 transition-opacity duration-500" style={{ opacity: isAssembled ? 1 : 0 }}>
+            <defs>
+                <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="var(--color-accent-secondary)" stopOpacity="0.1" />
+                    <stop offset="100%" stopColor="var(--color-accent-primary)" stopOpacity="0.7" />
+                </linearGradient>
+            </defs>
+            <style>{`
+                @keyframes line-flow { to { stroke-dashoffset: -16; } }
+                .animate-line-flow { animation: line-flow 1s linear infinite; }
+            `}</style>
+            <g transform={`translate(${size.width / 2}, ${size.height / 2})`}>
+                {agentsToShow.map((agent, index) => {
+                    if (agentStatuses[agent.id] !== 'working') return null;
 
-              return (
-                <li key={agent.id} className="relative list-none">
-                  {index > 0 && (
-                     <div className={`absolute left-[28px] -top-3 h-3 w-px transition-colors duration-500 ${isFlowActive ? 'bg-[var(--color-accent-primary)]' : 'bg-[var(--color-border)]'}`} />
-                  )}
-                  <AgentCard agent={agent} status={currentStatus} />
-                </li>
-              )
+                    const totalAgents = agentsToShow.length;
+                    const angleDeg = (index / totalAgents) * 360 - 90;
+                    const x = radius * Math.cos(angleDeg * Math.PI / 180);
+                    const y = radius * Math.sin(angleDeg * Math.PI / 180);
+
+                    return (
+                        <line
+                            key={`line-${agent.id}`}
+                            x1="0" y1="0" x2={x} y2={y}
+                            stroke="url(#line-gradient)"
+                            strokeWidth="2"
+                            strokeDasharray="8 8"
+                            className="animate-line-flow"
+                        />
+                    );
+                })}
+            </g>
+        </svg>
+
+        <div className="absolute flex flex-col items-center justify-center text-center">
+          <div className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center">
+            <div className="absolute inset-0 bg-slate-800/50 rounded-full border border-[var(--color-border)] shadow-2xl shadow-black/50"></div>
+            <div className="absolute inset-[-4px] border border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-30"></div>
+             <div className="absolute inset-[-8px] border border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-20 delay-500"></div>
+            <div className="relative z-10 p-4">
+              <h2 className="text-lg md:text-xl font-bold font-['Space_Grotesk'] text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-text-primary)] to-[var(--color-text-secondary)]">
+                {title}
+              </h2>
+              <p className="text-xs md:text-sm text-[var(--color-text-secondary)] mt-1">{description}</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute w-full h-full">
+          {agentsToShow.map((agent, index) => {
+            const totalAgents = agentsToShow.length;
+            const angleDeg = (index / totalAgents) * 360 - 90;
+            const x = radius * Math.cos(angleDeg * Math.PI / 180);
+            const y = radius * Math.sin(angleDeg * Math.PI / 180);
+            const currentStatus = agentStatuses[agent.id] || 'inactive';
+            const isDimmed = workingAgentIndex !== -1 && index !== workingAgentIndex;
+
+            return (
+              <div
+                key={agent.id}
+                className="absolute top-1/2 left-1/2"
+                style={{
+                  transition: 'transform 700ms ease-out, opacity 500ms ease-in-out',
+                  transform: isAssembled 
+                    ? `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${currentStatus === 'working' ? 1.05 : 1})`
+                    : 'translate(-50%, -50%) scale(0)',
+                  zIndex: currentStatus === 'working' ? 10 : 5,
+                  opacity: isAssembled ? (isDimmed ? 0.4 : 1) : 0,
+                }}
+              >
+                <AgentCard agent={agent} status={currentStatus} />
+              </div>
+            );
           })}
-        </ul>
+        </div>
       </div>
     </div>
   );

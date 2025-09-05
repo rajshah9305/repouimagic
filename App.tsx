@@ -5,8 +5,8 @@ import { AgentRole } from './types';
 import { AGENTS, INITIAL_CHAT_MESSAGES, INITIAL_PREVIEW_CONTENT } from './constants';
 import Stage from './components/Stage';
 import Console from './components/Console';
-import Header from './components/Header';
 import Toast from './components/Toast';
+import SettingsModal from './components/SettingsModal';
 
 type AppStatus = 'idle' | 'generating' | 'refining';
 
@@ -16,59 +16,102 @@ const App: React.FC = () => {
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
   const [status, setStatus] = useState<AppStatus>('idle');
   const [refiningVariantId, setRefiningVariantId] = useState<string | null>(null);
-  
-  // Agent workflow state
   const [agentStatuses, setAgentStatuses] = useState<Record<string, AgentStatus>>(
     AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {})
   );
 
   const [styleDnaLibrary, setStyleDnaLibrary] = useState<StyleDNA[]>([]);
-  const [activeStyleDna, setActiveStyleDna] = useState<StyleDNA | null>(null);
   const [toast, setToast] = useState<{message: string; type: ToastType} | null>(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+
+  const animationIntervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    return () => {
+      if (animationIntervalRef.current) {
+        clearInterval(animationIntervalRef.current);
+      }
+    };
+  }, []);
 
   const showToast = (message: string, type: ToastType = 'info') => {
     setToast({ message, type });
   };
 
-  const runWorkflowAnimation = async (agentOrder: string[], isError: boolean = false) => {
-    const initialStatuses = AGENTS.reduce((acc, agent) => ({
-      ...acc,
-      [agent.id]: agentOrder.includes(agent.id) ? 'pending' : 'inactive'
-    }), {});
-    setAgentStatuses(initialStatuses);
-    await new Promise(resolve => setTimeout(resolve, 200));
-
-    for (let i = 0; i < agentOrder.length; i++) {
-      const currentAgentId = agentOrder[i];
-      setAgentStatuses(prev => ({ ...prev, [currentAgentId]: 'working' }));
-      
-      await new Promise(resolve => setTimeout(resolve, 700));
-
-      if (i < agentOrder.length - 1) {
-        setAgentStatuses(prev => ({ ...prev, [currentAgentId]: 'completed' }));
-      }
+  const stopWorkflowAnimation = () => {
+    if (animationIntervalRef.current) {
+      clearInterval(animationIntervalRef.current);
+      animationIntervalRef.current = null;
     }
   };
 
-  const finalizeWorkflowAnimation = (agentOrder: string[], isError: boolean = false) => {
-    const finalStatus = isError ? 'error' : 'completed';
-    setAgentStatuses(prev => {
-      const finalStatuses = { ...prev };
-      agentOrder.forEach(id => {
-        if(prev[id] === 'working' || prev[id] === 'pending') {
-          finalStatuses[id] = finalStatus;
+  const runWorkflow = async (
+    agentIds: string[],
+    apiCall: () => Promise<any>,
+    onSuccess: (result: any) => void,
+    onError: (error: Error) => void
+  ) => {
+    let currentAgentIndex = 0;
+    setAgentStatuses(() => {
+        const statuses: Record<string, AgentStatus> = AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {});
+        agentIds.forEach(id => statuses[id] = 'pending');
+        if (agentIds.length > 0) {
+            statuses[agentIds[0]] = 'working';
         }
-      });
-      return finalStatuses;
+        return statuses;
     });
 
-    // Don't reset statuses immediately, let the user see the result
-    // The view will change away from the workflow anyway.
+    animationIntervalRef.current = setInterval(() => {
+        const nextAgentIndex = (currentAgentIndex + 1);
+        if (nextAgentIndex >= agentIds.length) {
+          stopWorkflowAnimation();
+          return;
+        }
+
+        setAgentStatuses(prev => {
+            const nextStatuses = { ...prev };
+            const currentAgentId = agentIds[currentAgentIndex];
+            const nextAgentId = agentIds[nextAgentIndex];
+
+            if (currentAgentId) nextStatuses[currentAgentId] = 'completed';
+            if (nextAgentId) nextStatuses[nextAgentId] = 'working';
+            
+            return nextStatuses;
+        });
+        currentAgentIndex = nextAgentIndex;
+    }, 2200); 
+
+    try {
+        const result = await apiCall();
+        stopWorkflowAnimation();
+        setAgentStatuses(prev => {
+            const finalStatuses = { ...prev };
+            agentIds.forEach(id => {
+                finalStatuses[id] = 'completed';
+            });
+            return finalStatuses;
+        });
+        await new Promise(res => setTimeout(res, 500));
+        onSuccess(result);
+    } catch (error) {
+        stopWorkflowAnimation();
+        const err = error instanceof Error ? error : new Error("An unknown error occurred.");
+        
+        setAgentStatuses(prev => {
+            const finalStatuses = { ...prev };
+            const failedAgentId = agentIds[currentAgentIndex];
+            for (let i = 0; i < currentAgentIndex; i++) {
+                finalStatuses[agentIds[i]] = 'completed';
+            }
+            if (failedAgentId) {
+                finalStatuses[failedAgentId] = 'error';
+            }
+            return finalStatuses;
+        });
+        await new Promise(res => setTimeout(res, 500));
+        onError(err);
+    }
   };
-  
-  const resetAgentStatuses = () => {
-     setAgentStatuses(AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {}));
-  }
 
   const handleGenerate = async (prompt: string, moods: string[]) => {
     if (!prompt.trim() || status !== 'idle') return;
@@ -76,41 +119,36 @@ const App: React.FC = () => {
     setStatus('generating');
     setVariants([]);
     setSelectedVariant(null);
-    if(chatMessages.length === 1 && chatMessages[0].role === AgentRole.System) {
-       setChatMessages([{ role: AgentRole.User, content: prompt }]);
-    } else {
-       setChatMessages(prev => [...prev, { role: AgentRole.User, content: prompt }]);
-    }
-    setChatMessages(prev => [...prev, { role: AgentRole.System, content: 'Analyzing your brief and coordinating the crew... This may take a moment.' }]);
-    
-    const agentOrder = AGENTS.map(a => a.id);
-    runWorkflowAnimation(agentOrder);
+    const userMessage = { role: AgentRole.User, content: prompt };
+    const systemMessage = { role: AgentRole.System, content: 'Analyzing your brief and coordinating the crew... This may take a moment.' };
+    setChatMessages(prev => (prev.length === 1 && prev[0].role === AgentRole.System) ? [userMessage, systemMessage] : [...prev, userMessage, systemMessage]);
 
     let fullPrompt = `${prompt}`;
     if (moods.length > 0) {
       fullPrompt += ` (moods: ${moods.join(', ')})`;
     }
-    if (activeStyleDna) {
-      fullPrompt += `\n\n**Style Preference:** Generate variants inspired by the "${activeStyleDna.name}" style (${activeStyleDna.style}). Prioritize a similar aesthetic.`;
-    }
 
-    try {
-      const newVariants = await generateUIVariants(fullPrompt);
-      setVariants(newVariants);
-      if (newVariants.length > 0) {
-        setSelectedVariant(newVariants[0]);
-        setChatMessages(prev => [...prev, { role: AgentRole.CodeGeneration, content: `Generated ${newVariants.length} unique UI variations! The preview is updated. Select a variant and use the chat to refine it.` }]);
-        finalizeWorkflowAnimation(agentOrder, false);
-      } else {
-         setChatMessages(prev => [...prev, { role: AgentRole.System, content: 'The AI returned an empty list of variants. Please try a different prompt.' }]);
-         finalizeWorkflowAnimation(agentOrder, true);
-      }
-    } catch (error) {
-      const errorMessage = (error instanceof Error) ? error.message : "An unknown error occurred.";
-      setChatMessages(prev => [...prev, { role: AgentRole.System, content: `Error: ${errorMessage}` }]);
-      finalizeWorkflowAnimation(agentOrder, true);
-    }
-    setStatus('idle');
+    const agentOrder = AGENTS.map(a => a.id);
+
+    await runWorkflow(
+        agentOrder,
+        () => generateUIVariants(fullPrompt),
+        (newVariants: Variant[]) => {
+            setVariants(newVariants);
+            if (newVariants.length > 0) {
+                setSelectedVariant(newVariants[0]);
+                setChatMessages(prev => [...prev, { role: AgentRole.CodeGeneration, content: `Generated ${newVariants.length} unique UI variations! The preview is updated. Select a variant and use the chat to refine it.` }]);
+            } else {
+                setChatMessages(prev => [...prev, { role: AgentRole.System, content: 'The AI returned an empty list of variants. Please try a different prompt.' }]);
+            }
+            setStatus('idle');
+            setAgentStatuses(AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {}))
+        },
+        (error: Error) => {
+            setChatMessages(prev => [...prev, { role: AgentRole.System, content: `Error: ${error.message}` }]);
+            setStatus('idle');
+        }
+    );
   };
 
   const handleSendMessage = async (message: string) => {
@@ -125,31 +163,30 @@ const App: React.FC = () => {
       content: `Refining "${selectedVariant.name}" based on your feedback...` 
     }]);
     
-    const agentOrder = ['orchestrator', 'generator'];
-    runWorkflowAnimation(agentOrder);
+    const agentOrder = ['orchestrator', 'generator', 'qa'];
 
-    try {
-      const refinedVariant = await refineUIVariant(message, selectedVariant);
-      
-      setVariants(prevVariants => 
-        prevVariants.map(v => v.id === refinedVariant.id ? refinedVariant : v)
-      );
-
-      setSelectedVariant(refinedVariant);
-
-      setChatMessages(prev => [...prev, { 
-        role: AgentRole.CodeGeneration, 
-        content: `I've updated the "${refinedVariant.name}" variant. The preview is now refreshed.` 
-      }]);
-      finalizeWorkflowAnimation(agentOrder, false);
-    } catch (error) {
-       const errorMessage = (error instanceof Error) ? error.message : "An unknown error occurred during refinement.";
-       setChatMessages(prev => [...prev, { role: AgentRole.System, content: `Error: ${errorMessage}` }]);
-       finalizeWorkflowAnimation(agentOrder, true);
-    }
-
-    setStatus('idle');
-    setRefiningVariantId(null);
+    await runWorkflow(
+        agentOrder,
+        () => refineUIVariant(message, selectedVariant),
+        (refinedVariant: Variant) => {
+            setVariants(prevVariants => 
+              prevVariants.map(v => v.id === refinedVariant.id ? refinedVariant : v)
+            );
+            setSelectedVariant(refinedVariant);
+            setChatMessages(prev => [...prev, { 
+              role: AgentRole.CodeGeneration, 
+              content: `I've updated the "${refinedVariant.name}" variant. The preview is now refreshed.` 
+            }]);
+            setStatus('idle');
+            setRefiningVariantId(null);
+            setAgentStatuses(AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {}))
+        },
+        (error: Error) => {
+            setChatMessages(prev => [...prev, { role: AgentRole.System, content: `Error: ${error.message}` }]);
+            setStatus('idle');
+            setRefiningVariantId(null);
+        }
+    );
   };
 
   const handleSaveStyleDna = (variantToSave: Variant, callback: (isNew: boolean) => void) => {
@@ -171,30 +208,13 @@ const App: React.FC = () => {
     showToast('React code copied to clipboard!', 'success');
   };
 
-  const handleDnaSelection = (dna: StyleDNA | null) => {
-    if (activeStyleDna?.id === dna?.id) {
-      setActiveStyleDna(null); // Toggle off if same is clicked
-    } else {
-      setActiveStyleDna(dna);
-    }
-  };
-  
-  useEffect(() => {
-    if (status === 'idle' && variants.length === 0) {
-      resetAgentStatuses();
-    }
-  }, [status, variants]);
-
-
   const currentPreview = selectedVariant ? selectedVariant.preview : INITIAL_PREVIEW_CONTENT;
 
   return (
-    <>
-      <Header />
-      <div className="flex-grow min-h-0 w-full max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 px-4 pb-4">
+    <div className="h-screen w-full flex flex-col p-4">
+      <div className="flex-grow min-h-0 w-full max-w-[1920px] mx-auto grid grid-rows-[3fr_1fr] gap-4">
         <Stage
           status={status}
-          agentStatuses={agentStatuses}
           variants={variants}
           selectedVariant={selectedVariant}
           onSelectVariant={setSelectedVariant}
@@ -203,6 +223,7 @@ const App: React.FC = () => {
           onSaveStyleDna={handleSaveStyleDna}
           onShowToast={showToast}
           onCopyCode={handleCopyCode}
+          agentStatuses={agentStatuses}
         />
         <Console
           messages={chatMessages}
@@ -211,13 +232,12 @@ const App: React.FC = () => {
           isLoading={status !== 'idle'}
           hasVariants={variants.length > 0}
           selectedVariant={selectedVariant}
-          styleDnaLibrary={styleDnaLibrary}
-          activeStyleDna={activeStyleDna}
-          onSelectDna={handleDnaSelection}
+          onSettingsClick={() => setIsSettingsOpen(true)}
         />
       </div>
        {toast && <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />}
-    </>
+       {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}
+    </div>
   );
 }
 

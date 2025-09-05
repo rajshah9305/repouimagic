@@ -11,14 +11,14 @@ interface ToastProps {
 
 const toastConfig = {
   success: {
-    bgColor: 'bg-[var(--color-success-glow)]',
-    borderColor: 'border-[var(--color-success-border)]',
-    textColor: 'text-[var(--color-success)]',
+    bgColor: 'bg-green-500/10',
+    borderColor: 'border-green-500/30',
+    textColor: 'text-green-400',
   },
   info: {
-    bgColor: 'bg-sky-100',
-    borderColor: 'border-sky-300',
-    textColor: 'text-sky-700',
+    bgColor: 'bg-sky-500/10',
+    borderColor: 'border-sky-500/30',
+    textColor: 'text-sky-400',
   }
 }
 
@@ -54,7 +54,7 @@ const Toast: React.FC<ToastProps> = ({ message, type, onDismiss }) => {
             setIsVisible(false);
             setTimeout(onDismiss, 300);
           }}
-          className={`ml-4 p-1 rounded-md ${config.textColor} opacity-70 hover:opacity-100 hover:bg-black/10 transition-colors`}
+          className={`ml-4 p-1 rounded-md ${config.textColor} opacity-70 hover:opacity-100 hover:bg-black/20 transition-colors`}
           aria-label="Dismiss"
         >
           <CloseIcon className="w-4 h-4" />

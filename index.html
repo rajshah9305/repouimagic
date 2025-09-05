@@ -11,38 +11,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
       :root {
-        /* New Professional Light Theme Palette */
-        --color-bg: #F9FAFB; /* gray-50 */
-        --color-panel: #FFFFFF;
-        --color-border: #E5E7EB; /* gray-200 */
-        
-        --color-header-bg: #FFFFFF;
-        --color-header-text: #1F2937; /* gray-800 */
+        /* New Dark "Glass & Aurora" Theme */
+        --color-bg-dark: #0A0F1F;
+        --color-bg-light: #171C2B;
+        --color-panel: rgba(23, 28, 43, 0.5);
+        --color-panel-solid: #171C2B;
+        --color-border: rgba(255, 255, 255, 0.1);
+        --color-border-heavy: rgba(255, 255, 255, 0.2);
 
-        --color-text-primary: #111827; /* gray-900 */
-        --color-text-secondary: #6B7280; /* gray-500 */
+        --color-text-primary: #F1F5F9; /* slate-100 */
+        --color-text-secondary: #94A3B8; /* slate-400 */
+        --color-text-tertiary: #64748B; /* slate-500 */
         
         /* Accents */
-        --color-accent-primary: #2563EB;  /* blue-600 */
-        --color-accent-secondary: #7C3AED; /* violet-600 */
+        --color-accent-primary: #3B82F6;  /* blue-500 */
+        --color-accent-secondary: #8B5CF6; /* violet-500 */
         
-        --color-accent-primary-glow: rgba(37, 99, 235, 0.1);
-        --color-accent-secondary-glow: rgba(124, 58, 237, 0.1);
+        --color-accent-primary-glow: rgba(59, 130, 246, 0.15);
+        --color-accent-secondary-glow: rgba(139, 92, 246, 0.15);
         
         /* Utility Colors */
-        --color-success: #16A34A;          /* Green-600 */
-        --color-success-glow: rgba(22, 163, 74, 0.1);
-        --color-success-border: rgba(22, 163, 74, 0.3);
-        --color-warning: #F59E0B;          /* Amber 500 */
-        --color-error: #EF4444;            /* Red 500 */
+        --color-success: #22C55E; /* green-500 */
+        --color-success-glow: rgba(34, 197, 94, 0.1);
+        --color-success-border: rgba(34, 197, 94, 0.3);
+        --color-warning: #F59E0B; /* amber-500 */
+        --color-error: #EF4444; /* red-500 */
       }
       
+      @keyframes aurora {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+      }
+
       body {
         color: var(--color-text-primary);
         font-family: 'Inter', sans-serif;
         overflow: hidden;
         overscroll-behavior: none;
-        background-color: var(--color-bg);
+        background-color: var(--color-bg-dark);
+        background-image: radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.1) 0px, transparent 50%), radial-gradient(at 97% 21%, hsla(135, 98%, 61%, 0.1) 0px, transparent 50%), radial-gradient(at 52% 99%, hsla(355, 98%, 61%, 0.1) 0px, transparent 50%), radial-gradient(at 10% 29%, hsla(256, 96%, 61%, 0.15) 0px, transparent 50%), radial-gradient(at 97% 96%, hsla(38, 60%, 74%, 0.1) 0px, transparent 50%), radial-gradient(at 33% 50%, hsla(222, 67%, 73%, 0.15) 0px, transparent 50%), radial-gradient(at 79% 53%, hsla(343, 68%, 79%, 0.1) 0px, transparent 50%);
+        background-size: 200% 200%;
+        animation: aurora 20s ease infinite;
       }
 
       #root {
@@ -53,25 +63,26 @@
       }
       
       .chat-scrollbar::-webkit-scrollbar {
-        width: 4px;
+        width: 6px;
       }
       .chat-scrollbar::-webkit-scrollbar-track {
         background: transparent;
       }
       .chat-scrollbar::-webkit-scrollbar-thumb {
-        background: #CBD5E1; /* gray-300 */
+        background: rgba(255, 255, 255, 0.15);
         border-radius: 20px;
       }
       .chat-scrollbar::-webkit-scrollbar-thumb:hover {
-        background: var(--color-accent-primary);
+        background: rgba(255, 255, 255, 0.25);
       }
       
-      .glowing-panel {
+      .glass-panel {
         background-color: var(--color-panel);
         border: 1px solid var(--color-border);
+        backdrop-filter: blur(12px);
         box-shadow: 
-          0 4px 12px -2px var(--color-accent-primary-glow),
-          0 4px 12px -2px var(--color-accent-secondary-glow);
+          0 8px 32px 0 rgba(0, 0, 0, 0.2),
+          inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
       }
     </style>
   <script type="importmap">

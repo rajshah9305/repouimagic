@@ -2,6 +2,7 @@ import React from 'react';
 import type { Variant, ToastType } from '../types';
 import PreviewPanel from './PreviewPanel';
 import VariantSelector from './VariantSelector';
+import PreviewActions from './PreviewActions';
 
 type AppStatus = 'idle' | 'generating' | 'refining';
 
@@ -38,18 +39,33 @@ const MainPanel: React.FC<MainPanelProps> = ({
       </div>
       
       {hasVariants && (
-        <div className="flex-shrink-0 glowing-panel rounded-2xl p-4">
-          <VariantSelector
-            variants={variants}
-            selectedVariant={selectedVariant}
-            onSelectVariant={onSelectVariant}
-            status={status}
-            refiningVariantId={refiningVariantId}
-            onSaveStyleDna={onSaveStyleDna}
-            onShowToast={onShowToast}
-            onCopyCode={onCopyCode}
-          />
-        </div>
+        <>
+          {/* FIX: Add PreviewActions to use the action-related props. */}
+          {selectedVariant && (
+            <PreviewActions
+              variant={selectedVariant}
+              onSaveStyleDna={() => onSaveStyleDna(selectedVariant, (isNew) => {
+                if (isNew) {
+                  onShowToast(`"${selectedVariant.name}" saved to Style DNA`, 'success');
+                } else {
+                  onShowToast(`"${selectedVariant.name}" is already in your library`, 'info');
+                }
+              })}
+              onCopyCode={() => onCopyCode(selectedVariant.code)}
+              onShowToast={onShowToast}
+            />
+          )}
+          <div className="flex-shrink-0 glowing-panel rounded-2xl p-4">
+            {/* FIX: Removed props not accepted by VariantSelector (onSaveStyleDna, onShowToast, onCopyCode). */}
+            <VariantSelector
+              variants={variants}
+              selectedVariant={selectedVariant}
+              onSelectVariant={onSelectVariant}
+              status={status}
+              refiningVariantId={refiningVariantId}
+            />
+          </div>
+        </>
       )}
     </main>
   );
