@@ -70,3 +70,52 @@ export const Expand: React.FC<IconProps> = ({ className }) => <svg xmlns="http:/
 export const ChevronUp: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5" /></svg>;
 export const Checkmark: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" /></svg>;
 export const XMark: React.FC<IconProps> = ({ className }) => <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" /></svg>;
+
+
+/* Agent Previews */
+export const OrchestratorPreview: React.FC<IconProps> = ({ className }) => (
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <circle cx="20" cy="30" r="6" fill="currentColor" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" repeatCount="indefinite"/></circle>
+    <circle cx="60" cy="30" r="6" fill="currentColor" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="0.5s" repeatCount="indefinite"/></circle>
+    <circle cx="100" cy="30" r="6" fill="currentColor" opacity="0.8"><animate attributeName="opacity" values="0.8;0.3;0.8" dur="2s" begin="1s" repeatCount="indefinite"/></circle>
+    <path d="M 26 30 L 54 30" stroke="currentColor" strokeWidth="1" strokeDasharray="4 2"><animate attributeName="stroke-dashoffset" from="6" to="0" dur="1s" repeatCount="indefinite"/></path>
+    <path d="M 66 30 L 94 30" stroke="currentColor" strokeWidth="1" strokeDasharray="4 2"><animate attributeName="stroke-dashoffset" from="6" to="0" dur="1s" begin="0.5s" repeatCount="indefinite"/></path>
+  </svg>
+);
+export const ArchitectPreview: React.FC<IconProps> = ({ className }) => (
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <rect x="10" y="10" width="40" height="40" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.5s" repeatCount="indefinite"/></rect>
+    <rect x="60" y="15" width="50" height="15" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="0.5s" repeatCount="indefinite"/></rect>
+    <rect x="60" y="35" width="25" height="10" rx="4" stroke="currentColor" strokeWidth="1.5" fill="none" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="2.5s" begin="1s" repeatCount="indefinite"/></rect>
+  </svg>
+);
+export const CuratorPreview: React.FC<IconProps> = ({ className }) => (
+    <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
+      <circle cx="30" cy="30" r="12" fill="#2563EB"><animate attributeName="opacity" values="1;0.2;1" dur="3s" repeatCount="indefinite"/></circle>
+      <circle cx="60" cy="30" r="12" fill="#7C3AED"><animate attributeName="opacity" values="1;0.2;1" dur="3s" begin="1s" repeatCount="indefinite"/></circle>
+      <circle cx="90" cy="30" r="12" fill="#16A34A"><animate attributeName="opacity" values="1;0.2;1" dur="3s" begin="2s" repeatCount="indefinite"/></circle>
+    </svg>
+);
+export const GeneratorPreview: React.FC<IconProps> = ({ className }) => (
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className} fontFamily="'JetBrains Mono', monospace" fontSize="12" fill="currentColor">
+    <text x="10" y="25">{`<div className="...">`}</text>
+    <text x="10" y="45">{`  <button>Submit</button>`}</text>
+    <rect x="8" y="10" width="104" height="40" fill="var(--color-bg)" >
+      <animate attributeName="width" from="104" to="0" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    <path d="M 112 15 L 112 45" stroke="currentColor" strokeWidth="2">
+      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+    </path>
+  </svg>
+);
+export const QAPreview: React.FC<IconProps> = ({ className }) => (
+  <svg viewBox="0 0 120 60" xmlns="http://www.w3.org/2000/svg" className={className}>
+    <path d="M30 25 L 35 30 L 45 20" stroke="#16A34A" strokeWidth="2" fill="none" />
+    <path d="M30 40 L 35 45 L 45 35" stroke="#16A34A" strokeWidth="2" fill="none" />
+    <g transform="translate(0, 0)">
+      <animateTransform attributeName="transform" type="translate" values="50 0; 80 0; 50 0" dur="3s" repeatCount="indefinite" />
+      <circle cx="20" cy="30" r="8" stroke="currentColor" strokeWidth="1.5" fill="none" />
+      <path d="M 26 36 L 32 42" stroke="currentColor" strokeWidth="1.5" />
+    </g>
+  </svg>
+);

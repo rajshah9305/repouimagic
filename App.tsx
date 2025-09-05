@@ -3,12 +3,10 @@ import { generateUIVariants, refineUIVariant } from './services/geminiService';
 import type { Variant, ChatMessage, Agent, StyleDNA, ToastType, AgentStatus } from './types';
 import { AgentRole } from './types';
 import { AGENTS, INITIAL_CHAT_MESSAGES, INITIAL_PREVIEW_CONTENT } from './constants';
-import AgentPanel from './components/AgentPanel';
-import MainPanel from './components/MainPanel';
-import ChatPanel from './components/ChatPanel';
+import Stage from './components/Stage';
+import Console from './components/Console';
 import Header from './components/Header';
 import Toast from './components/Toast';
-import { ChevronUp } from './components/Icons';
 
 type AppStatus = 'idle' | 'generating' | 'refining';
 
@@ -64,10 +62,13 @@ const App: React.FC = () => {
       return finalStatuses;
     });
 
-    setTimeout(() => {
-      setAgentStatuses(AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {}));
-    }, 2000);
+    // Don't reset statuses immediately, let the user see the result
+    // The view will change away from the workflow anyway.
   };
+  
+  const resetAgentStatuses = () => {
+     setAgentStatuses(AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {}));
+  }
 
   const handleGenerate = async (prompt: string, moods: string[]) => {
     if (!prompt.trim() || status !== 'idle') return;
@@ -127,7 +128,6 @@ const App: React.FC = () => {
     const agentOrder = ['orchestrator', 'generator'];
     runWorkflowAnimation(agentOrder);
 
-
     try {
       const refinedVariant = await refineUIVariant(message, selectedVariant);
       
@@ -178,46 +178,44 @@ const App: React.FC = () => {
       setActiveStyleDna(dna);
     }
   };
+  
+  useEffect(() => {
+    if (status === 'idle' && variants.length === 0) {
+      resetAgentStatuses();
+    }
+  }, [status, variants]);
+
 
   const currentPreview = selectedVariant ? selectedVariant.preview : INITIAL_PREVIEW_CONTENT;
 
   return (
     <>
       <Header />
-      <div className="flex-grow min-h-0 w-full max-w-[1920px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-4 px-4 pb-4">
-        <AgentPanel
-          agentStatuses={agentStatuses}
-          styleDnaLibrary={styleDnaLibrary}
-          activeStyleDna={activeStyleDna}
-          onSelectDna={handleDnaSelection}
-        />
-
-        <MainPanel
+      <div className="flex-grow min-h-0 w-full max-w-[1920px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-4 px-4 pb-4">
+        <Stage
           status={status}
-          refiningVariantId={refiningVariantId}
+          agentStatuses={agentStatuses}
           variants={variants}
           selectedVariant={selectedVariant}
           onSelectVariant={setSelectedVariant}
           previewCode={currentPreview}
+          refiningVariantId={refiningVariantId}
           onSaveStyleDna={handleSaveStyleDna}
           onShowToast={showToast}
           onCopyCode={handleCopyCode}
         />
-        
-        <ChatPanel
+        <Console
           messages={chatMessages}
           onSendMessage={handleSendMessage}
           onGenerate={handleGenerate}
           isLoading={status !== 'idle'}
           hasVariants={variants.length > 0}
           selectedVariant={selectedVariant}
+          styleDnaLibrary={styleDnaLibrary}
+          activeStyleDna={activeStyleDna}
+          onSelectDna={handleDnaSelection}
         />
       </div>
-       <footer className="flex-shrink-0 h-8 bg-[var(--color-header-bg)] flex items-center justify-center border-t border-[var(--color-border)]">
-         <button className="text-slate-500 hover:text-white transition-colors">
-            <ChevronUp className="w-5 h-5" />
-         </button>
-       </footer>
        {toast && <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />}
     </>
   );
