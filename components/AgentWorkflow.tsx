@@ -17,7 +17,7 @@ const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, statu
   const stateConfig: Record<AgentStatus, { ring: string; iconBg: string; statusIndicator: React.ReactNode; }> = {
     inactive: { ring: 'border-[var(--color-border)]', iconBg: 'bg-white/5 text-[var(--color-text-secondary)]', statusIndicator: <div className="w-2 h-2 rounded-full bg-slate-600" />, },
     pending: { ring: 'border-[var(--color-border)]', iconBg: 'bg-white/5 text-[var(--color-text-secondary)]', statusIndicator: <div className="w-2 h-2 rounded-full bg-sky-500 animate-pulse" />, },
-    working: { ring: 'border-transparent ring-2 ring-[var(--color-accent-primary)] shadow-2xl shadow-[var(--color-accent-primary-glow)]', iconBg: 'bg-[var(--color-accent-primary-glow)] text-[var(--color-accent-primary)]', statusIndicator: <LoadingSpinner />, },
+    working: { ring: 'border-transparent', iconBg: 'bg-[var(--color-accent-primary-glow)] text-[var(--color-accent-primary)]', statusIndicator: <LoadingSpinner />, },
     completed: { ring: 'border-[var(--color-success-border)]', iconBg: 'bg-[var(--color-success-bg)] text-[var(--color-success)]', statusIndicator: <Checkmark className="w-4 h-4 text-[var(--color-success)]" />, },
     error: { ring: 'border-[var(--color-error-border)]', iconBg: 'bg-[var(--color-error-bg)] text-[var(--color-error)]', statusIndicator: <XMark className="w-4 h-4 text-[var(--color-error)]" />, }
   };
@@ -33,7 +33,7 @@ const AgentCard: React.FC<{agent: Agent; status: AgentStatus}> = ({ agent, statu
   };
   
   return (
-    <div className={`w-56 text-left p-3 rounded-2xl transition-all duration-300 border ${currentConfig.ring} glass-panel`}>
+    <div className={`w-56 text-left p-3 rounded-2xl transition-all duration-300 border glass-panel ${currentConfig.ring} ${status === 'working' ? 'chasing-border-card' : ''}`}>
       <div className="flex items-center">
         <div className={`flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center mr-3 transition-colors duration-300 ${currentConfig.iconBg}`}>
           <Icon className="w-5 h-5" />
@@ -101,32 +101,35 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
         
         <svg width="100%" height="100%" className="absolute top-0 left-0 transition-opacity duration-500" style={{ opacity: isAssembled ? 1 : 0 }}>
             <defs>
-                <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="var(--color-accent-secondary)" stopOpacity="0.1" />
-                    <stop offset="100%" stopColor="var(--color-accent-primary)" stopOpacity="0.7" />
+                <linearGradient id="line-gradient-active" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="var(--color-accent-secondary)" />
+                    <stop offset="100%" stopColor="var(--color-accent-primary)" />
                 </linearGradient>
             </defs>
-            <style>{`
-                @keyframes line-flow { to { stroke-dashoffset: -16; } }
-                .animate-line-flow { animation: line-flow 1s linear infinite; }
-            `}</style>
             <g transform={`translate(${size.width / 2}, ${size.height / 2})`}>
                 {agentsToShow.map((agent, index) => {
-                    if (agentStatuses[agent.id] !== 'working') return null;
-
                     const totalAgents = agentsToShow.length;
                     const angleDeg = (index / totalAgents) * 360 - 90;
                     const x = radius * Math.cos(angleDeg * Math.PI / 180);
                     const y = radius * Math.sin(angleDeg * Math.PI / 180);
 
+                    const currentStatus = agentStatuses[agent.id] || 'inactive';
+                    const isWorking = currentStatus === 'working';
+                    const isDone = currentStatus === 'completed';
+
                     return (
-                        <line
+                        <path
                             key={`line-${agent.id}`}
-                            x1="0" y1="0" x2={x} y2={y}
-                            stroke="url(#line-gradient)"
-                            strokeWidth="2"
-                            strokeDasharray="8 8"
-                            className="animate-line-flow"
+                            d={`M 0 0 L ${x} ${y}`}
+                            stroke={isWorking ? 'url(#line-gradient-active)' : 'var(--color-border)'}
+                            strokeWidth={isWorking ? 2 : 1}
+                            fill="none"
+                            strokeDasharray={isWorking ? "8 8" : "4 4"}
+                            className={isWorking ? 'animate-energy-flow' : ''}
+                             style={{
+                                opacity: isAssembled ? (isWorking ? 1 : (isDone ? 0.4 : 0.2)) : 0,
+                                transition: 'all 500ms ease-in-out',
+                            }}
                         />
                     );
                 })}
@@ -134,11 +137,8 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
         </svg>
 
         <div className="absolute flex flex-col items-center justify-center text-center">
-          <div className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center">
+          <div className="relative w-40 h-40 md:w-48 md:h-48 flex items-center justify-center nexus-pulse-container">
             <div className="absolute inset-0 bg-black/30 rounded-full border border-[var(--color-border)] shadow-2xl shadow-black/50"></div>
-            <div className="absolute inset-0 border border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-50"></div>
-             <div className="absolute inset-[-6px] border-2 border-[var(--color-accent-primary)] rounded-full animate-pulse opacity-30 delay-500"></div>
-             <div className="absolute inset-[4px] bg-gradient-to-br from-[var(--color-accent-primary-glow)] to-transparent rounded-full animate-pulse delay-1000"></div>
             <div className="relative z-10 p-4">
               <h2 className="text-lg md:text-xl font-bold font-['Space_Grotesk'] text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-text-primary)] to-[var(--color-text-secondary)]">
                 {title}
@@ -162,12 +162,14 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
                 key={agent.id}
                 className="absolute top-1/2 left-1/2"
                 style={{
-                  transition: 'transform 800ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease-in-out',
-                  transform: isAssembled 
+                  transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease-in-out, filter 500ms ease-in-out',
+                  transitionDelay: `${100 + index * 100}ms`,
+                  transform: isAssembled
                     ? `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${currentStatus === 'working' ? 1.05 : 1})`
-                    : 'translate(-50%, -50%) scale(0.5)',
+                    : `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.5)`,
                   zIndex: currentStatus === 'working' ? 10 : 5,
-                  opacity: isAssembled ? (isDimmed ? 0.4 : 1) : 0,
+                  opacity: isAssembled ? (isDimmed ? 0.3 : 1) : 0,
+                  filter: isAssembled && isDimmed ? 'blur(2px)' : 'none',
                 }}
               >
                 <AgentCard agent={agent} status={currentStatus} />
