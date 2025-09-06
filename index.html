@@ -63,11 +63,6 @@
       @keyframes fade-in-scale-up { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
       @keyframes slide-in-from-bottom { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-      @keyframes panel-pulse {
-        0%, 100% { box-shadow: 0 0 0 0 var(--color-accent-primary-glow); }
-        50% { box-shadow: 0 0 20px 0 var(--color-accent-primary-glow); }
-      }
-
       @keyframes nexus-pulse {
         0% { transform: scale(0.9); opacity: 0.7; }
         100% { transform: scale(1.5); opacity: 0; }
@@ -76,6 +71,17 @@
       @keyframes energy-flow {
         from { stroke-dashoffset: 0; }
         to { stroke-dashoffset: -32; }
+      }
+
+      @keyframes materialize {
+        from {
+          opacity: 0;
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(0.5);
+        }
+        to {
+          opacity: 1;
+          transform: translate(var(--tw-translate-x), var(--tw-translate-y)) scale(1);
+        }
       }
 
       @property --angle {
@@ -145,10 +151,6 @@
       .input-glow-ring:focus-within, .input-glow-ring:focus {
         box-shadow: 0 0 0 3px var(--color-accent-primary-glow), 0 0 0 1px var(--color-accent-primary);
         border-color: var(--color-accent-primary);
-      }
-
-      .glowing-panel {
-        animation: panel-pulse 6s ease-in-out infinite;
       }
       
       .nexus-pulse-container::before,

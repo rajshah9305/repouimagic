@@ -7,24 +7,31 @@ import Stage from './components/Stage';
 import Console from './components/Console';
 import Toast from './components/Toast';
 import SettingsModal from './components/SettingsModal';
+import Header from './components/Header';
+
 
 type AppStatus = 'idle' | 'generating' | 'refining';
+export type ConsoleTab = 'briefing' | 'chat' | 'dna';
 
 const App: React.FC = () => {
   const [variants, setVariants] = useState<Variant[]>([]);
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(null);
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>(INITIAL_CHAT_MESSAGES);
   const [status, setStatus] = useState<AppStatus>('idle');
+  const [consoleTab, setConsoleTab] = useState<ConsoleTab>('briefing');
   const [refiningVariantId, setRefiningVariantId] = useState<string | null>(null);
   const [agentStatuses, setAgentStatuses] = useState<Record<string, AgentStatus>>(
     AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {})
   );
 
   const [styleDnaLibrary, setStyleDnaLibrary] = useState<StyleDNA[]>([]);
+  const [activeStyleDna, setActiveStyleDna] = useState<StyleDNA | null>(null);
   const [toast, setToast] = useState<{message: string; type: ToastType} | null>(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
-  const animationIntervalRef = useRef<number | null>(null);
+  // FIX: Use `ReturnType<typeof setInterval>` to correctly type the ref for interval IDs,
+  // which can be `number` in browsers or `NodeJS.Timeout` in Node environments.
+  const animationIntervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     return () => {
@@ -113,7 +120,7 @@ const App: React.FC = () => {
     }
   };
 
-  const handleGenerate = async (prompt: string, moods: string[]) => {
+  const handleGenerate = async (prompt: string, moods: string[], appliedDna: StyleDNA | null) => {
     if (!prompt.trim() || status !== 'idle') return;
     
     setStatus('generating');
@@ -121,11 +128,14 @@ const App: React.FC = () => {
     setSelectedVariant(null);
     const userMessage = { role: AgentRole.User, content: prompt };
     const systemMessage = { role: AgentRole.System, content: 'Analyzing your brief and coordinating the crew... This may take a moment.' };
-    setChatMessages(prev => (prev.length === 1 && prev[0].role === AgentRole.System) ? [userMessage, systemMessage] : [...prev, userMessage, systemMessage]);
-
+    setChatMessages([userMessage, systemMessage]);
+    
     let fullPrompt = `${prompt}`;
     if (moods.length > 0) {
-      fullPrompt += ` (moods: ${moods.join(', ')})`;
+      fullPrompt += `\n\n**Moods & Keywords:** ${moods.join(', ')}`;
+    }
+    if(appliedDna) {
+      fullPrompt += `\n\n**Style DNA Reference:** Emulate the aesthetic of "${appliedDna.name}" which is described as: "${appliedDna.style}".`;
     }
 
     const agentOrder = AGENTS.map(a => a.id);
@@ -138,8 +148,10 @@ const App: React.FC = () => {
             if (newVariants.length > 0) {
                 setSelectedVariant(newVariants[0]);
                 setChatMessages(prev => [...prev, { role: AgentRole.CodeGeneration, content: `Generated ${newVariants.length} unique UI variations! The preview is updated. Select a variant and use the chat to refine it.` }]);
+                setConsoleTab('chat');
             } else {
                 setChatMessages(prev => [...prev, { role: AgentRole.System, content: 'The AI returned an empty list of variants. Please try a different prompt.' }]);
+                setConsoleTab('briefing');
             }
             setStatus('idle');
             setAgentStatuses(AGENTS.reduce((acc, agent) => ({ ...acc, [agent.id]: 'inactive' }), {}))
@@ -147,6 +159,7 @@ const App: React.FC = () => {
         (error: Error) => {
             setChatMessages(prev => [...prev, { role: AgentRole.System, content: `Error: ${error.message}` }]);
             setStatus('idle');
+            setConsoleTab('briefing');
         }
     );
   };
@@ -198,9 +211,16 @@ const App: React.FC = () => {
       id: variantToSave.id,
       name: variantToSave.name,
       style: variantToSave.style,
+      preview: variantToSave.preview,
     };
     setStyleDnaLibrary(prev => [...prev, newDna]);
     callback(true);
+  };
+
+  const handleApplyDna = (dna: StyleDNA) => {
+    setActiveStyleDna(dna);
+    setConsoleTab('briefing');
+    showToast(`Applied "${dna.name}" DNA to next generation.`, 'info');
   };
   
   const handleCopyCode = (code: string) => {
@@ -211,29 +231,39 @@ const App: React.FC = () => {
   const currentPreview = selectedVariant ? selectedVariant.preview : INITIAL_PREVIEW_CONTENT;
 
   return (
-    <div className="h-screen w-full flex flex-col p-4">
-      <div className="flex-grow min-h-0 w-full max-w-[1920px] mx-auto grid grid-rows-[3fr_1fr] gap-4">
-        <Stage
-          status={status}
-          variants={variants}
-          selectedVariant={selectedVariant}
-          onSelectVariant={setSelectedVariant}
-          previewCode={currentPreview}
-          refiningVariantId={refiningVariantId}
-          onSaveStyleDna={handleSaveStyleDna}
-          onShowToast={showToast}
-          onCopyCode={handleCopyCode}
-          agentStatuses={agentStatuses}
-        />
-        <Console
-          messages={chatMessages}
-          onSendMessage={handleSendMessage}
-          onGenerate={handleGenerate}
-          isLoading={status !== 'idle'}
-          hasVariants={variants.length > 0}
-          selectedVariant={selectedVariant}
-          onSettingsClick={() => setIsSettingsOpen(true)}
-        />
+    <div className="h-screen w-full flex flex-col">
+      <Header onSettingsClick={() => setIsSettingsOpen(true)} />
+      <div className="flex-grow min-h-0 w-full max-w-[1920px] mx-auto grid grid-cols-12 gap-4 p-4">
+        <div className="col-span-12 lg:col-span-8 h-full min-h-0">
+            <Stage
+              status={status}
+              variants={variants}
+              selectedVariant={selectedVariant}
+              onSelectVariant={setSelectedVariant}
+              previewCode={currentPreview}
+              refiningVariantId={refiningVariantId}
+              onSaveStyleDna={handleSaveStyleDna}
+              onShowToast={showToast}
+              onCopyCode={handleCopyCode}
+              agentStatuses={agentStatuses}
+            />
+        </div>
+        <div className="col-span-12 lg:col-span-4 h-full min-h-0">
+            <Console
+              messages={chatMessages}
+              onSendMessage={handleSendMessage}
+              onGenerate={handleGenerate}
+              isLoading={status !== 'idle'}
+              hasVariants={variants.length > 0}
+              selectedVariant={selectedVariant}
+              activeTab={consoleTab}
+              onTabChange={setConsoleTab}
+              styleDnaLibrary={styleDnaLibrary}
+              activeStyleDna={activeStyleDna}
+              onApplyDna={handleApplyDna}
+              onClearDna={() => setActiveStyleDna(null)}
+            />
+        </div>
       </div>
        {toast && <Toast message={toast.message} type={toast.type} onDismiss={() => setToast(null)} />}
        {isSettingsOpen && <SettingsModal onClose={() => setIsSettingsOpen(false)} />}

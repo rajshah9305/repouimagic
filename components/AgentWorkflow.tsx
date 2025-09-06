@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import type { Agent, AgentStatus } from '../types';
 import { AGENTS } from '../constants';
-// FIX: Import newly added preview icons
 import { Checkmark, XMark, OrchestratorPreview, ArchitectPreview, CuratorPreview, GeneratorPreview, QAPreview } from './Icons';
 
 interface AgentWorkflowProps {
@@ -69,24 +68,17 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
         const { width, height } = workflowRef.current.getBoundingClientRect();
         setSize({ width, height });
         const minDim = Math.min(width, height);
-        const newRadius = Math.max(140, (minDim - 250) / 2);
+        const newRadius = Math.max(160, (minDim - 250) / 2);
         setRadius(newRadius);
       }
     };
 
-    let timeoutId: number | null = null;
-    const debouncedHandler = () => {
-      if (timeoutId) clearTimeout(timeoutId);
-      timeoutId = window.setTimeout(calculateLayout, 100);
-    }
-
     calculateLayout();
-    window.addEventListener('resize', debouncedHandler);
+    window.addEventListener('resize', calculateLayout);
     
     return () => {
       clearTimeout(assemblyTimer);
-      if (timeoutId) clearTimeout(timeoutId);
-      window.removeEventListener('resize', debouncedHandler);
+      window.removeEventListener('resize', calculateLayout);
     };
   }, []);
 
@@ -96,7 +88,7 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
   const workingAgentIndex = agentsToShow.findIndex(a => agentStatuses[a.id] === 'working');
 
   return (
-    <div ref={workflowRef} className="flex-grow glass-panel rounded-2xl flex flex-col items-center justify-center p-4 sm:p-8 overflow-hidden h-full">
+    <div ref={workflowRef} className="w-full h-full flex flex-col items-center justify-center overflow-hidden bg-[var(--color-bg-dark)]" style={{animation: 'fade-in 0.5s'}}>
       <div className="relative w-full h-full flex items-center justify-center">
         
         <svg width="100%" height="100%" className="absolute top-0 left-0 transition-opacity duration-500" style={{ opacity: isAssembled ? 1 : 0 }}>
@@ -161,16 +153,18 @@ const AgentWorkflow: React.FC<AgentWorkflowProps> = ({ agentStatuses, status }) 
               <div
                 key={agent.id}
                 className="absolute top-1/2 left-1/2"
+                // FIX: Cast style object to `React.CSSProperties` to allow for CSS custom properties
+                // like `--tw-translate-x`, which are not in the default style type definition.
                 style={{
-                  transition: 'transform 900ms cubic-bezier(0.16, 1, 0.3, 1), opacity 500ms ease-in-out, filter 500ms ease-in-out',
-                  transitionDelay: `${100 + index * 100}ms`,
-                  transform: isAssembled
-                    ? `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(${currentStatus === 'working' ? 1.05 : 1})`
-                    : `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) scale(0.5)`,
+                  animation: `materialize 900ms cubic-bezier(0.16, 1, 0.3, 1) ${100 + index * 100}ms both`,
+                  '--tw-translate-x': `calc(-50% + ${x}px)`,
+                  '--tw-translate-y': `calc(-50% + ${y}px)`,
+                  transition: 'opacity 500ms ease-in-out, filter 500ms ease-in-out, transform 500ms ease-in-out',
+                  transform: `translate(var(--tw-translate-x), var(--tw-translate-y)) scale(${currentStatus === 'working' ? 1.05 : 1})`,
                   zIndex: currentStatus === 'working' ? 10 : 5,
                   opacity: isAssembled ? (isDimmed ? 0.3 : 1) : 0,
                   filter: isAssembled && isDimmed ? 'blur(2px)' : 'none',
-                }}
+                } as React.CSSProperties}
               >
                 <AgentCard agent={agent} status={currentStatus} />
               </div>

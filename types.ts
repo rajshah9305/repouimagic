@@ -37,6 +37,7 @@ export interface StyleDNA {
   id: string;
   name: string;
   style: string;
+  preview: string;
 }
 
 export type ToastType = 'success' | 'info';
